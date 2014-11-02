@@ -1,4 +1,4 @@
-package djohn.microservices.scripts;
+package edu.depaul.scripts;
 
 import java.awt.Desktop;
 import java.io.FileNotFoundException;
@@ -11,8 +11,7 @@ import java.io.PrintWriter;
  *
  */
 class DosScript implements Scripts {
-
-	@Override
+	
 	public void createScript() {
 	
 		try {
@@ -45,7 +44,6 @@ class DosScript implements Scripts {
 		}
 	}
 
-	@Override
 	public void writeToLogFile(StringBuilder str) {
 		
 		logFile = new java.io.File(LOG_FILE);
@@ -63,7 +61,6 @@ class DosScript implements Scripts {
 		
 	}
 	
-	@Override
 	public void runScript() {
 		try {
 			//run .bat for DOS
@@ -73,7 +70,6 @@ class DosScript implements Scripts {
 		}	
 	}
 
-	@Override
 	public void openLog() {
 		try {
 			Desktop.getDesktop().open(logFile);
@@ -81,13 +77,11 @@ class DosScript implements Scripts {
 			e.printStackTrace();
 		}
 	}
-	
-	@Override
+
 	public boolean canExcute() {
 		return file.canExecute();
 	}
 	
-	@Override
 	public ScriptType getScriptType() {
 		return ScriptType.DOS;
 	}

@@ -1,4 +1,4 @@
-package djohn.microservices.data;
+package edu.depaul.data;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -7,15 +7,14 @@ import java.io.IOException;
 
 final class FreeMemoryData implements Data {
 
-	@Override
 	public void getData(StringBuilder b) {
 		
 		try {
 			
-			File file = new File("FreeMemoryFile.txt");
+			File f = new File("FreeMemoryFile.txt");
 			
 			//create a file reader
-			BufferedReader readFrom = new BufferedReader(new FileReader(file));
+			BufferedReader readFrom = new BufferedReader(new FileReader(f));
 			
 			String line = null;
 			java.util.StringTokenizer token;
@@ -36,8 +35,6 @@ final class FreeMemoryData implements Data {
 			}
 					
 			readFrom.close();
-			
-			file.deleteOnExit();
 		
 		} catch (IOException e) { System.err.print("Issue opening file"); }
 	}
@@ -48,11 +45,10 @@ final class FreeMemoryData implements Data {
 		b.append("Free Memory: " + token.nextToken() + "<br>");
 	}
 	
-	@Override
 	public DataName getDataName() {
 		return DataName.VOLUME;
 	}
-
+	
 	private final int WINDOWS_OS_START = 8;
 	private final int OS_X_START = 13;
 	

@@ -1,4 +1,4 @@
-package djohn.microservices.data;
+package edu.depaul.data;
 
 /**
  * 

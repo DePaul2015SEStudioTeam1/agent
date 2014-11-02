@@ -1,4 +1,4 @@
-package djohn.microservices.data;
+package edu.depaul.data;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -12,7 +12,6 @@ import java.io.IOException;
  */
 final class CpuData implements Data {
 
-	@Override
 	public void getData(StringBuilder b) {
 		
 		try {
@@ -40,14 +39,11 @@ final class CpuData implements Data {
 			
 			//close reader
 			readFrom.close();
-			
-			//delete file from directory
-			f.deleteOnExit();
+		
 		} catch(IOException e) { e.printStackTrace(); }
 		
 	}
 	
-	@Override
 	public DataName getDataName() {
 		return DataName.SYSTEM;
 	}

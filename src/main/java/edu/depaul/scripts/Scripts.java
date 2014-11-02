@@ -1,4 +1,4 @@
-package djohn.microservices.scripts;
+package edu.depaul.scripts;
 
 /**
  * 
@@ -14,7 +14,6 @@ interface Scripts {
 	public boolean canExcute();
 	public ScriptType getScriptType();
 	
-	final String USER_DESKTOP = "~/Desktop/SampleMockAgent/";
 	final String LOG_FILE = "log.html";
 	
 }

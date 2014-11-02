@@ -1,4 +1,4 @@
-package djohn.microservices.agent;
+package edu.depaul.agent;
 
 import java.awt.Desktop;
 import java.io.File;
@@ -6,11 +6,11 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-import djohn.microservices.data.DataLoader;
-import djohn.microservices.data.DataManager;
-import djohn.microservices.scripts.ScriptLoader;
-import djohn.microservices.scripts.ScriptManager;
-import djohn.microservices.scripts.ScriptType;
+import edu.depaul.data.DataLoader;
+import edu.depaul.data.DataManager;
+import edu.depaul.scripts.ScriptLoader;
+import edu.depaul.scripts.ScriptManager;
+import edu.depaul.scripts.ScriptType;
 
 /**
  * 
@@ -62,11 +62,11 @@ public class Agent {
 		}
 		
 		//wait for data to be retrieved
-		try {
+		/*try {
 			Thread.sleep(WAIT_TIME_IN_MILLIS);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
-		}
+		}*/
 	
 		//get data loaded into program
 		DataManager.getInstance().getAllData(b);
@@ -98,7 +98,7 @@ public class Agent {
 				"</p><fieldset><p>");			
 	}
 	
-	private final int WAIT_TIME_IN_MILLIS = 5000;
+	//private final int WAIT_TIME_IN_MILLIS = 5000;
 	private StringBuilder b;
 	
 }

@@ -1,4 +1,4 @@
-package djohn.microservices.data;
+package edu.depaul.data;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -7,7 +7,6 @@ import java.io.IOException;
 
 final class VersionData implements Data {
 
-	@Override
 	public void getData(StringBuilder b) {
 		try {
 			
@@ -19,10 +18,7 @@ final class VersionData implements Data {
 		
 			//read the first line from the file
 			String line = readFrom.readLine();
-		
-			//if the line is blank read the next line
-			if(line.equals("")) line = readFrom.readLine();
-		
+			
 			while((line = readFrom.readLine()) != null) {
 				
 				if((line.indexOf("OS description") != -1) 
@@ -36,14 +32,10 @@ final class VersionData implements Data {
 					
 			//close reader
 			readFrom.close();
-			
-			//delete dynamic file
-			f.deleteOnExit();
 		
 			} catch (IOException e) { System.err.print("Issue opening file"); }
 	}
 	
-	@Override
 	public DataName getDataName() {
 		return DataName.VERSION;
 	}

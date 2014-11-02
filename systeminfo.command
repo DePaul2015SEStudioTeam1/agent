@@ -1,11 +1,5 @@
 echo off
-mdfind -name SampleMockAgent | xargs -I {} cp -r {} ~/Desktop
-cd ~/Desktop/SampleMockAgent
-touch freeMemoryFile.txt
-touch version.txt
-touch ipFile.txt
-touch diskFile.txt
-touch cpuFile.txt
+cd /Users/Jet2kus84/Software/git/agent/
 java -jar sigar-bin/sigar.jar free > freeMemoryFile.txt
 java -jar sigar-bin/sigar.jar version > versionFile.txt
 java -jar sigar-bin/sigar.jar netinfo > ipFile.txt

@@ -1,4 +1,4 @@
-package djohn.microservices.data;
+package edu.depaul.data;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -12,7 +12,6 @@ import java.io.IOException;
  */
 final class IpData implements Data {
 
-	@Override
 	public void getData(StringBuilder b) {
 		
 		try {
@@ -36,12 +35,10 @@ final class IpData implements Data {
 			
 			readFrom.close();
 			
-			f.deleteOnExit();
 		} catch(IOException e) { System.err.print("Issue opening file"); }
 		
 	}
 	
-	@Override
 	public DataName getDataName() {
 		return DataName.IP;
 	}

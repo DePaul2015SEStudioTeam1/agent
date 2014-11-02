@@ -1,4 +1,4 @@
-package djohn.microservices.scripts;
+package edu.depaul.scripts;
 
 import java.awt.Desktop;
 import java.io.FileNotFoundException;
@@ -11,25 +11,23 @@ import java.io.PrintWriter;
  *
  */
 class UnixScript implements Scripts {
-
-	@Override
+	
 	public void createScript() {
 		
 		file = new java.io.File("systeminfo.command");
-	
+		
+		//get the current location of the command file
+		String path = file.getAbsolutePath();
+		
 		PrintWriter w;
 		try {
 			w = new PrintWriter(file);
 			
-			//create batch file and retrieve system metrics using sigar.jar
+			//create batch file and retrieve system metrics using sigar resources
 			String b = "echo off\n" + 
-					"mdfind -name SampleMockAgent | xargs -I {} cp -r {} ~/Desktop\n" +
-					"cd ~/Desktop/SampleMockAgent\n" +
-					"touch freeMemoryFile.txt\n" +
-					"touch version.txt\n" +
-					"touch ipFile.txt\n" +
-					"touch diskFile.txt\n" +
-					"touch cpuFile.txt\n" +
+					//point to the current directory
+					"cd " + path.substring(0, path.indexOf("systeminfo.command")) 
+					+ "\n" +
 					"java -jar sigar-bin/sigar.jar free > freeMemoryFile.txt\n" +
 					"java -jar sigar-bin/sigar.jar version > versionFile.txt\n" +
 					"java -jar sigar-bin/sigar.jar netinfo > ipFile.txt\n" + 
@@ -51,10 +49,9 @@ class UnixScript implements Scripts {
 		
 	}
 	
-	@Override
 	public void writeToLogFile(StringBuilder str) {
-		
-		logFile = new java.io.File(USER_DESKTOP + LOG_FILE);
+	
+		logFile = new java.io.File(LOG_FILE);
 		
 		try {
 			
@@ -67,8 +64,7 @@ class UnixScript implements Scripts {
 			e.printStackTrace();
 		}
 	}
-
-	@Override
+	
 	public void runScript() {
 		try {
 			//run .command for Unix
@@ -78,7 +74,6 @@ class UnixScript implements Scripts {
 		}	
 	}
 	
-	@Override
 	public void openLog() {
 		try {
 			Desktop.getDesktop().open(logFile);
@@ -87,12 +82,10 @@ class UnixScript implements Scripts {
 		}
 	}
 	
-	@Override
 	public boolean canExcute() {
 		return file.canExecute();
 	}
 	
-	@Override
 	public ScriptType getScriptType() {
 		return ScriptType.UNIX;
 	}

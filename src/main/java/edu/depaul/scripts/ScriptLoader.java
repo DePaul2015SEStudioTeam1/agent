@@ -1,4 +1,4 @@
-package djohn.microservices.scripts;
+package edu.depaul.scripts;
 
 public class ScriptLoader {
 	public static void load() {
