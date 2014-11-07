@@ -7,7 +7,7 @@ import java.io.PrintWriter;
 
 /**
  * 
- * @author Jet2kus84
+ * @author Deonte D Johnson
  *
  */
 class DosScript implements Scripts {

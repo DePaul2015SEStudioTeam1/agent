@@ -1,5 +1,10 @@
 package edu.depaul.scripts;
 
+/**
+ * 
+ * @author Deonte D Johnson
+ *
+ */
 public class ScriptLoader {
 	public static void load() {
 		//initial scripts

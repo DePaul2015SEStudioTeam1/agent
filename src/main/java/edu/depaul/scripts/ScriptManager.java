@@ -4,7 +4,7 @@ import java.util.LinkedList;
 
 /**
  * 
- * @author Jet2kus84
+ * @author Deonte D Johnson
  *
  */
 public class ScriptManager {

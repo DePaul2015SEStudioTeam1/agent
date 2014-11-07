@@ -1,5 +1,10 @@
 package edu.depaul.data;
 
+/**
+ * 
+ * @author Deonte D Johnson
+ *
+ */
 public class DataLoader {
 	public static void load() {
 		DataManager.getInstance().addData(new FreeMemoryData());

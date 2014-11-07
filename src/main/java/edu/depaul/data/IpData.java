@@ -5,9 +5,11 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 
+import edu.depaul.maestroService.ContainerMan;
+
 /**
  * 
- * @author Jet2kus84
+ * @author Deonte D Johnson
  *
  */
 final class IpData implements Data {
@@ -41,5 +43,11 @@ final class IpData implements Data {
 	
 	public DataName getDataName() {
 		return DataName.IP;
+	}
+
+	@Override
+	public void getData(ContainerMan _container) {
+		// TODO Auto-generated method stub
+		
 	}
 }

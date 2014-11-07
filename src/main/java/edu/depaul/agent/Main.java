@@ -3,6 +3,11 @@ package edu.depaul.agent;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+/**
+ * 
+ * @author Deonte D Johnson
+ *
+ */
 public class Main {
 
 	/**

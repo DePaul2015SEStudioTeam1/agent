@@ -5,6 +5,13 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 
+import edu.depaul.maestroService.ContainerMan;
+
+/**
+ * 
+ * @author Deonte D Johnson
+ *
+ */
 final class VersionData implements Data {
 
 	public void getData(StringBuilder b) {
@@ -38,5 +45,11 @@ final class VersionData implements Data {
 	
 	public DataName getDataName() {
 		return DataName.VERSION;
+	}
+
+	@Override
+	public void getData(ContainerMan _container) {
+		// TODO Auto-generated method stub
+		
 	}
 }

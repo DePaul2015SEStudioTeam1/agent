@@ -7,7 +7,7 @@ import java.io.PrintWriter;
 
 /**
  * 
- * @author Jet2kus84
+ * @author Deonte D Johnson
  *
  */
 class UnixScript implements Scripts {
@@ -28,6 +28,7 @@ class UnixScript implements Scripts {
 					//point to the current directory
 					"cd " + path.substring(0, path.indexOf("systeminfo.command")) 
 					+ "\n" +
+					
 					"java -jar sigar-bin/sigar.jar free > freeMemoryFile.txt\n" +
 					"java -jar sigar-bin/sigar.jar version > versionFile.txt\n" +
 					"java -jar sigar-bin/sigar.jar netinfo > ipFile.txt\n" + 

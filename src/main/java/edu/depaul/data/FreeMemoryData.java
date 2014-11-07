@@ -5,6 +5,14 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 
+import edu.depaul.maestroService.ContainerMan;
+
+/**
+ * 
+ * 
+ * @author Deonte D Johnson
+ *
+ */
 final class FreeMemoryData implements Data {
 
 	public void getData(StringBuilder b) {
@@ -51,5 +59,10 @@ final class FreeMemoryData implements Data {
 	
 	private final int WINDOWS_OS_START = 8;
 	private final int OS_X_START = 13;
+	@Override
+	public void getData(ContainerMan _container) {
+		// TODO Auto-generated method stub
+		
+	}
 	
 }

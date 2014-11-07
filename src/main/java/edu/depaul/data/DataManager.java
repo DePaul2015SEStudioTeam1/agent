@@ -3,9 +3,11 @@ package edu.depaul.data;
 import java.util.LinkedList;
 import java.util.List;
 
+import edu.depaul.maestroService.ContainerMan;
+
 /**
  * 
- * @author Jet2kus84
+ * @author Deonte D Johnson
  *
  */
 public class DataManager {
@@ -35,9 +37,18 @@ public class DataManager {
 	 * 
 	 * @param b StringBuilder object to create and write log
 	 */
-	public void getAllData(StringBuilder b) {
+	public void getAllData(StringBuilder b) { //Remove
 		for(Data i : list) 
 			i.getData(b);
+	}
+	
+	/**
+	 * 
+	 * @param container container from maestro to fill  with data
+	 */
+	public void getAllData(ContainerMan container) {
+		for(Data i : list)
+			i.getData(container);
 	}
 	
 	/**

@@ -2,7 +2,7 @@ package edu.depaul.scripts;
 
 /**
  * 
- * @author Jet2kus84
+ * @author Deonte D Johnson
  *
  */
 public enum ScriptType {
