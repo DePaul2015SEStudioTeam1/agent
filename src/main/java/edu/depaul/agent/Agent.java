@@ -1,30 +1,23 @@
 package edu.depaul.agent;
 
-import java.awt.Desktop;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.PrintWriter;
-
 import edu.depaul.data.DataLoader;
 import edu.depaul.data.DataManager;
+import edu.depaul.maestro.service.MaestroService;
+import edu.depaul.maestroService.ContainerMan;
+import edu.depaul.operations.model.Container;
 import edu.depaul.scripts.ScriptLoader;
 import edu.depaul.scripts.ScriptManager;
 import edu.depaul.scripts.ScriptType;
 
 /**
  * 
- * @author Jet2kus84
+ * @author Deonte D Johnson
  *
  */
 public class Agent {
-
-	public static void main(String[] args) {
-		new Agent().run();
-	}
 	
 	public void run() {
-	
+		
 		//retrieve current OS type
 		ScriptType currentOS = null;
 		
@@ -41,43 +34,38 @@ public class Agent {
 			currentOS = ScriptType.UNIX;
 		}
 		else {
-			
-			File f = new File("log.html");
-			try {
-				
-				PrintWriter w = new PrintWriter(f);
-				w.write("<html><title>404</title><body>" +
-						"<h1>Can not run on this OS</h1></body></html>");
-				w.flush();
-				w.close();
-				
-			} catch (FileNotFoundException e1) { e1.printStackTrace(); }
-			
-			try {
-				Desktop.getDesktop().open(f);
-			} catch (IOException e) { System.err.print("Problem occurred when opening log file"); }
-			
+			//if agent can't run on OS
+			System.out.println("Can not run on this OS");
+		
 			//exit program if script doesn't work for OS
 			System.exit(0);
 		}
-		
-		//wait for data to be retrieved
-		/*try {
-			Thread.sleep(WAIT_TIME_IN_MILLIS);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}*/
 	
-		//get data loaded into program
 		DataManager.getInstance().getAllData(b);
 				
-		//write end of html log file
+		//write end of html log file, just for show until maestro is up and running
 		b.append("</p></fieldset>Log details " +
-				"provided by Deonte Johnson</body></html>");
+				"provided by Deonte Johnson</body></html>"); //remove
+				
+		//write data to log
+		ScriptManager.getInstance().writeToLogFile(b, currentOS); //remove
 		
-		ScriptManager.getInstance().writeToLogFile(b, currentOS);
-		ScriptManager.getInstance().openLog(currentOS);
+		//open log
+		ScriptManager.getInstance().openLog(currentOS); // remove
 		
+		//get data loaded into program and place in containerMan
+		DataManager.getInstance().getAllData(container);
+		
+		//send data obtained by the ContainerMan to the maestro
+		maestroService.store(container.getContainer());
+	}
+	
+	/**
+	 * 
+	 * @param maestroService
+	 */
+	public void setMaestroService(MaestroService<Container> maestroService) {
+		this.maestroService = maestroService;
 	}
 	
 	public Agent() {
@@ -88,17 +76,21 @@ public class Agent {
 		//load in script objects
 		ScriptLoader.load();
 		
-		//gather data
+		//create a new container to input data
+		container = new ContainerMan();
+		
+		//gather data, will be replaced by container
 		b = new StringBuilder();
 		
-		//write initial html script
+		//write initial html script, just for show until maestro is up and running
 		b.append("<html><title>Log</title><body bgcolor=#F8F8F8>" +
 				"<h1 align=center>System Log</h1><hr><p align=center>" +
 				new java.util.Date() +
 				"</p><fieldset><p>");			
 	}
-	
-	//private final int WAIT_TIME_IN_MILLIS = 5000;
+
+	private ContainerMan container;
+	private MaestroService<Container> maestroService;
 	private StringBuilder b;
 	
 }
