@@ -41,7 +41,7 @@ public class Agent {
 			System.exit(0);
 		}
 	
-		DataManager.getInstance().getAllData(b);
+		DataManager.getInstance().getAllData(b); //remove
 				
 		//write end of html log file, just for show until maestro is up and running
 		b.append("</p></fieldset>Log details " +
@@ -80,13 +80,13 @@ public class Agent {
 		container = new ContainerMan();
 		
 		//gather data, will be replaced by container
-		b = new StringBuilder();
+		b = new StringBuilder(); //remove
 		
 		//write initial html script, just for show until maestro is up and running
 		b.append("<html><title>Log</title><body bgcolor=#F8F8F8>" +
 				"<h1 align=center>System Log</h1><hr><p align=center>" +
 				new java.util.Date() +
-				"</p><fieldset><p>");			
+				"</p><fieldset><p>");	//remove
 	}
 
 	private ContainerMan container;

@@ -9,7 +9,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
  *
  */
 public class Main {
-
+	
 	/**
 	 * @param args
 	 */
@@ -18,5 +18,4 @@ public class Main {
 		Agent agent = (Agent) context.getBean("agent");
 		agent.run();
 	}
-
 }
