@@ -50,22 +50,6 @@ class UnixScript implements Scripts {
 		
 	}
 	
-	public void writeToLogFile(StringBuilder str) {
-	
-		logFile = new java.io.File(LOG_FILE);
-		
-		try {
-			
-			PrintWriter w = new PrintWriter(logFile);
-			w.println(str);
-			w.flush();
-			w.close();
-			
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
-	}
-	
 	public void runScript() {
 		try {
 			//run .command for Unix
@@ -74,15 +58,7 @@ class UnixScript implements Scripts {
 			e.printStackTrace();
 		}	
 	}
-	
-	public void openLog() {
-		try {
-			Desktop.getDesktop().open(logFile);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-	
+
 	public boolean canExcute() {
 		return file.canExecute();
 	}
@@ -91,5 +67,5 @@ class UnixScript implements Scripts {
 		return ScriptType.UNIX;
 	}
 
-	private java.io.File file, logFile;
+	private java.io.File file;
 }

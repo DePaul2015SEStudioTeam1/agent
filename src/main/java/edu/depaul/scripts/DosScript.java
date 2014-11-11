@@ -43,23 +43,6 @@ class DosScript implements Scripts {
 			e.printStackTrace();
 		}
 	}
-
-	public void writeToLogFile(StringBuilder str) {
-		
-		logFile = new java.io.File(LOG_FILE);
-		
-		try {
-			
-			PrintWriter w = new PrintWriter(logFile);
-			w.println(str);
-			w.flush();
-			w.close();
-	
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
-		
-	}
 	
 	public void runScript() {
 		try {
@@ -69,15 +52,7 @@ class DosScript implements Scripts {
 			e.printStackTrace();
 		}	
 	}
-
-	public void openLog() {
-		try {
-			Desktop.getDesktop().open(logFile);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
+	
 	public boolean canExcute() {
 		return file.canExecute();
 	}
@@ -86,5 +61,5 @@ class DosScript implements Scripts {
 		return ScriptType.DOS;
 	}
 	
-	private java.io.File file, logFile;
+	private java.io.File file;
 }

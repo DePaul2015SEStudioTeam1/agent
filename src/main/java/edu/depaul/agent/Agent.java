@@ -18,20 +18,15 @@ public class Agent {
 	
 	public void run() {
 		
-		//retrieve current OS type
-		ScriptType currentOS = null;
-		
 		//create file object for scripts
 		ScriptManager.getInstance().createScripts();
 		
 		//run appropriate script
 		if(ScriptManager.getInstance().canExecuteScript(ScriptType.DOS)) {
 			ScriptManager.getInstance().runScript(ScriptType.DOS);
-			currentOS = ScriptType.DOS;
 		} 
 		else if(ScriptManager.getInstance().canExecuteScript(ScriptType.UNIX)) {
 			ScriptManager.getInstance().runScript(ScriptType.UNIX);
-			currentOS = ScriptType.UNIX;
 		}
 		else {
 			//if agent can't run on OS
@@ -40,19 +35,7 @@ public class Agent {
 			//exit program if script doesn't work for OS
 			System.exit(0);
 		}
-	
-		DataManager.getInstance().getAllData(b); //remove
-				
-		//write end of html log file, just for show until maestro is up and running
-		b.append("</p></fieldset>Log details " +
-				"provided by Deonte Johnson</body></html>"); //remove
-				
-		//write data to log
-		ScriptManager.getInstance().writeToLogFile(b, currentOS); //remove
-		
-		//open log
-		ScriptManager.getInstance().openLog(currentOS); // remove
-		
+								
 		//get data loaded into program and place in containerMan
 		DataManager.getInstance().getAllData(container);
 		
@@ -78,19 +61,8 @@ public class Agent {
 		
 		//create a new container to input data
 		container = new ContainerMan();
-		
-		//gather data, will be replaced by container
-		b = new StringBuilder(); //remove
-		
-		//write initial html script, just for show until maestro is up and running
-		b.append("<html><title>Log</title><body bgcolor=#F8F8F8>" +
-				"<h1 align=center>System Log</h1><hr><p align=center>" +
-				new java.util.Date() +
-				"</p><fieldset><p>");	//remove
 	}
 
 	private ContainerMan container;
 	private MaestroService<Container> maestroService;
-	private StringBuilder b;
-	
 }

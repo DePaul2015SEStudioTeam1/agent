@@ -14,8 +14,8 @@ import edu.depaul.maestroService.ContainerMan;
  */
 final class CpuData implements Data {
 
-	public void getData(StringBuilder b) {
-		
+	@Override
+	public void getData(ContainerMan _container) {
 		try {
 			
 			File f = new File("cpuFile.txt");
@@ -26,33 +26,46 @@ final class CpuData implements Data {
 			
 			while((line = readFrom.readLine()) != null) {
 				
-				//get host name
-				if((line.indexOf("CPUs") != -1) || 
-					(line.indexOf("Model") != -1) || 
-					(line.indexOf("Cores") != -1) ||
-					(line.indexOf("Vendor") != -1) ||
-					(line.indexOf("Physical Memory") != -1))
-				
-				{
-					b.append(line.trim() + "<br>");
+				if(line.indexOf("Model") != -1) {
+					java.util.StringTokenizer token = new java.util.StringTokenizer(line);
+					
+					//skip first token, model
+					token.nextToken(".");
+					_container.setCpuModel(token.nextToken("."));
 				}
 				
+				if(line.indexOf("Vendor") != -1) {
+					java.util.StringTokenizer token = new java.util.StringTokenizer(line);
+					
+					//skip first token, vendor
+					token.nextToken(".");
+					_container.setCpuVendor(token.nextToken("."));
+				}
+				
+				if(line.indexOf("Total CPUs") != -1) {
+					boolean flag = false;
+					java.util.StringTokenizer token = new java.util.StringTokenizer(line);
+				
+					while(!flag) {
+						try {
+							_container.setCpuCount(Integer.parseInt(token.nextToken(".")));
+							flag = true;
+						}
+						catch(NumberFormatException e) { 
+							continue;
+						}
+					} 
+				}
 			}
 			
 			//close reader
 			readFrom.close();
 		
 		} catch(IOException e) { e.printStackTrace(); }
-		
 	}
 	
+	@Override
 	public DataName getDataName() {
 		return DataName.SYSTEM;
-	}
-
-	@Override
-	public void getData(ContainerMan _container) {
-		// TODO Auto-generated method stub
-		
 	}
 }

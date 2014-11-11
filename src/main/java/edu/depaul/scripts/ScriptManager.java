@@ -50,17 +50,6 @@ public class ScriptManager {
 	
 	/**
 	 * 
-	 * @param str string builder object to be written to log file
-	 * @param type operating system type
-	 */
-	public void writeToLogFile(StringBuilder str, ScriptType type) {
-		for(Scripts s : list)
-			if(s.getScriptType() == type)
-				s.writeToLogFile(str);
-	}
-	
-	/**
-	 * 
 	 * @param type script type to script in question
 	 * @return whether or not this script can be executed
 	 */
@@ -81,12 +70,6 @@ public class ScriptManager {
 				s.runScript();
 				break;
 			}
-	}
-	
-	public void openLog(ScriptType type) {
-		for(Scripts s : list) 
-			if(s.getScriptType() == type)
-				s.openLog();
 	}
 	
 	private ScriptManager() {

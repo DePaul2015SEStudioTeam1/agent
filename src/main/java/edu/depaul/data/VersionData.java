@@ -14,7 +14,8 @@ import edu.depaul.maestroService.ContainerMan;
  */
 final class VersionData implements Data {
 
-	public void getData(StringBuilder b) {
+	@Override
+	public void getData(ContainerMan _container) {
 		try {
 			
 			//open file
@@ -28,28 +29,39 @@ final class VersionData implements Data {
 			
 			while((line = readFrom.readLine()) != null) {
 				
-				if((line.indexOf("OS description") != -1) 
-						|| (line.indexOf("OS name") != -1) 
-						|| (line.indexOf("Current user") != -1)
-						|| (line.indexOf("data model") != -1)
-						|| (line.indexOf("Java home") != -1)) {
-					b.append(line.trim() + "<br>");	
+				if(line.indexOf("OS description") != -1) {
+					java.util.StringTokenizer token = new java.util.StringTokenizer(line);
+					
+					//skip first token, OS description
+					token.nextToken(".");
+					_container.setOsDescription(token.nextToken("."));
+				}
+				
+				if(line.indexOf("OS name") != -1) {
+					java.util.StringTokenizer token = new java.util.StringTokenizer(line);
+					
+					//skip first token, OS name
+					token.nextToken(".");
+					_container.setOsName(token.nextToken("."));
+				}
+				
+				if(line.indexOf("data model") != -1) {
+					java.util.StringTokenizer token = new java.util.StringTokenizer(line);
+					
+					//skip first token, data model
+					token.nextToken(".");
+					_container.setOsDataModel(token.nextToken("."));
 				}
 			}
-					
+			
 			//close reader
 			readFrom.close();
 		
 			} catch (IOException e) { System.err.print("Issue opening file"); }
 	}
 	
+	@Override
 	public DataName getDataName() {
 		return DataName.VERSION;
-	}
-
-	@Override
-	public void getData(ContainerMan _container) {
-		// TODO Auto-generated method stub
-		
 	}
 }
