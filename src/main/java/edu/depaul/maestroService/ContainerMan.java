@@ -133,6 +133,37 @@ public class ContainerMan {
 	
 	/**
 	 * 
+	 * @return mac address THIS IS TEMPORARY!!!!
+	 */
+	public String getPrimaryMacAddress() {
+		return container.getPrimaryMacAddress();
+	}
+	/**
+	 * 
+	 * @param id REMOVE!!!
+	 */
+	public void setAgentId(String id) {
+		container.setAgentId(id);
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public String getAgentId() {
+		return this.container.getAgentId();
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public Long getId() {
+		return this.container.getId();
+	}
+	
+	/**
+	 * 
 	 * @return current container being used
 	 */
 	public Container getContainer() {

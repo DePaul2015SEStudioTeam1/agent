@@ -8,6 +8,7 @@ import edu.depaul.operations.model.Container;
 import edu.depaul.scripts.ScriptLoader;
 import edu.depaul.scripts.ScriptManager;
 import edu.depaul.scripts.ScriptType;
+import org.apache.log4j.Logger;
 
 /**
  * 
@@ -39,8 +40,21 @@ public class Agent {
 		//get data loaded into program and place in containerMan
 		DataManager.getInstance().getAllData(container);
 		
+		//return mac address
+		container.setAgentId(container.getPrimaryMacAddress());
+		
 		//send data obtained by the ContainerMan to the maestro
 		maestroService.store(container.getContainer());
+		
+		
+		if(logger.isDebugEnabled()){
+			logger.debug("Container received by Maestro. Container ID: " + container.getId() +
+					" Sent by Agent ID: " + container.getAgentId());
+		}
+		
+		logger.error("There was a problem with the container received.", new Exception("Testing"));
+		
+		System.out.println(logger);
 	}
 	
 	/**
@@ -61,8 +75,12 @@ public class Agent {
 		
 		//create a new container to input data
 		container = new ContainerMan();
+		
+		//
+		logger = Logger.getLogger(Agent.class);
 	}
 
 	private ContainerMan container;
+	final Logger logger;
 	private MaestroService<Container> maestroService;
 }
