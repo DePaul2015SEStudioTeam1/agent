@@ -39,22 +39,35 @@ public class Agent {
 								
 		//get data loaded into program and place in containerMan
 		DataManager.getInstance().getAllData(container);
-		
+	
 		//return mac address
 		container.setAgentId(container.getPrimaryMacAddress());
+		
+		/****************************************************************/
+		//Test data
+		String[] a = {
+				container.getContainer().getAgentId(),
+				container.getContainer().getCpuModel(),
+				container.getContainer().getCpuVendor(),
+				container.getContainer().getHostName(),
+				container.getContainer().getOsDataModel(),
+				container.getContainer().getPrimaryIpAddress(),
+				container.getContainer().getPrimaryMacAddress(),
+		};
+		
+		for(String b : a) 
+			System.out.println(b);
+		/****************************************************************/
 		
 		//send data obtained by the ContainerMan to the maestro
 		maestroService.store(container.getContainer());
 		
-		
-		if(logger.isDebugEnabled()){
+		/*if(logger.isDebugEnabled()){
 			logger.debug("Container received by Maestro. Container ID: " + container.getId() +
 					" Sent by Agent ID: " + container.getAgentId());
 		}
 		
-		logger.error("There was a problem with the container received.", new Exception("Testing"));
-		
-		System.out.println(logger);
+		logger.error("There was a problem with the container received.", new Exception("Testing"));*/
 	}
 	
 	/**

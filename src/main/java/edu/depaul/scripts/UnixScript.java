@@ -14,6 +14,16 @@ class UnixScript implements Scripts {
 	
 	public void createScript() {
 		
+		/*Sigar s = new Sigar();
+		
+		try{
+			System.out.println("cpu total:" + s.getDiskUsage("Free"));
+		}
+		catch(SigarException se){
+			se.printStackTrace();
+		}*/
+		
+		
 		file = new java.io.File("systeminfo.command");
 		
 		//get the current location of the command file
