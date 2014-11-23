@@ -23,9 +23,14 @@ public class Agent implements Runnable {
 	private Sigar sigar = new Sigar();
 	private static final Logger logger = Logger.getLogger(Agent.class);
 	private MaestroService<Container> maestroService;
+	private String agentId;
 	
 	public void setMaestroService(MaestroService<Container> maestroService) {
 		this.maestroService = maestroService;
+	}
+	
+	public void setAgentId(String agentId) {
+		this.agentId = agentId;
 	}
 	
 	public void run() {
@@ -63,7 +68,7 @@ public class Agent implements Runnable {
 			container.setHostName(netInfo.getHostName());
 			container.setPrimaryIpAddress(sigar.getFQDN());
 			container.setPrimaryMacAddress(config.getHwaddr());
-			container.setAgentId(config.getHwaddr());
+			container.setAgentId(agentId);
 			
 			maestroService.store(container);
 		}
