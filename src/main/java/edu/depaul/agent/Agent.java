@@ -1,5 +1,7 @@
 package edu.depaul.agent;
 
+import org.apache.log4j.Logger;
+
 import edu.depaul.data.DataLoader;
 import edu.depaul.data.DataManager;
 import edu.depaul.maestro.service.MaestroService;
@@ -8,14 +10,13 @@ import edu.depaul.operations.model.Container;
 import edu.depaul.scripts.ScriptLoader;
 import edu.depaul.scripts.ScriptManager;
 import edu.depaul.scripts.ScriptType;
-import org.apache.log4j.Logger;
 
 /**
+ * Main execution thread of the agent.
  * 
  * @author Deonte D Johnson
- *
  */
-public class Agent {
+public class Agent implements Runnable {
 	
 	public void run() {
 		
@@ -34,7 +35,7 @@ public class Agent {
 			System.out.println("Can not run on this OS");
 		
 			//exit program if script doesn't work for OS
-			System.exit(0);
+			System.exit(-1);
 		}
 								
 		//get data loaded into program and place in containerMan
