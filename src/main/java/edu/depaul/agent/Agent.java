@@ -1,100 +1,75 @@
 package edu.depaul.agent;
 
-import org.apache.log4j.Logger;
+import java.io.File;
 
-import edu.depaul.data.DataLoader;
-import edu.depaul.data.DataManager;
+import org.apache.log4j.Logger;
+import org.hyperic.sigar.CpuInfo;
+import org.hyperic.sigar.Mem;
+import org.hyperic.sigar.NetInfo;
+import org.hyperic.sigar.NetInterfaceConfig;
+import org.hyperic.sigar.Sigar;
+import org.hyperic.sigar.SigarException;
+
 import edu.depaul.maestro.service.MaestroService;
-import edu.depaul.maestroService.ContainerMan;
 import edu.depaul.operations.model.Container;
-import edu.depaul.scripts.ScriptLoader;
-import edu.depaul.scripts.ScriptManager;
-import edu.depaul.scripts.ScriptType;
 
 /**
- * Main execution thread of the agent.
  * 
  * @author Deonte D Johnson
+ *
  */
 public class Agent implements Runnable {
 	
-	public void run() {
-		
-		//create file object for scripts
-		ScriptManager.getInstance().createScripts();
-		
-		//run appropriate script
-		if(ScriptManager.getInstance().canExecuteScript(ScriptType.DOS)) {
-			ScriptManager.getInstance().runScript(ScriptType.DOS);
-		} 
-		else if(ScriptManager.getInstance().canExecuteScript(ScriptType.UNIX)) {
-			ScriptManager.getInstance().runScript(ScriptType.UNIX);
-		}
-		else {
-			//if agent can't run on OS
-			System.out.println("Can not run on this OS");
-		
-			//exit program if script doesn't work for OS
-			System.exit(-1);
-		}
-								
-		//get data loaded into program and place in containerMan
-		DataManager.getInstance().getAllData(container);
+	private Sigar sigar = new Sigar();
+	private static final Logger logger = Logger.getLogger(Agent.class);
+	private MaestroService<Container> maestroService;
 	
-		//return mac address
-		container.setAgentId(container.getPrimaryMacAddress());
-		
-		/****************************************************************/
-		//Test data
-		String[] a = {
-				container.getContainer().getAgentId(),
-				container.getContainer().getCpuModel(),
-				container.getContainer().getCpuVendor(),
-				container.getContainer().getHostName(),
-				container.getContainer().getOsDataModel(),
-				container.getContainer().getPrimaryIpAddress(),
-				container.getContainer().getPrimaryMacAddress(),
-		};
-		
-		for(String b : a) 
-			System.out.println(b);
-		/****************************************************************/
-		
-		//send data obtained by the ContainerMan to the maestro
-		maestroService.store(container.getContainer());
-		
-		/*if(logger.isDebugEnabled()){
-			logger.debug("Container received by Maestro. Container ID: " + container.getId() +
-					" Sent by Agent ID: " + container.getAgentId());
-		}
-		
-		logger.error("There was a problem with the container received.", new Exception("Testing"));*/
-	}
-	
-	/**
-	 * 
-	 * @param maestroService
-	 */
 	public void setMaestroService(MaestroService<Container> maestroService) {
 		this.maestroService = maestroService;
 	}
 	
-	public Agent() {
-					
-		//load in data objects
-		DataLoader.load();
+	public void run() {
 		
-		//load in script objects
-		ScriptLoader.load();
-		
-		//create a new container to input data
-		container = new ContainerMan();
-		
-		//
-		logger = Logger.getLogger(Agent.class);
+		try {
+			Mem mem = sigar.getMem();
+			CpuInfo[] cpus = sigar.getCpuInfoList();
+			NetInfo netInfo = sigar.getNetInfo();
+			NetInterfaceConfig config = sigar.getNetInterfaceConfig();
+			
+			Container container = new Container();
+			
+			// mem
+			container.setMemFree(mem.getFree());
+			container.setMemTotal(mem.getTotal());
+			container.setMemUsed(mem.getUsed());
+			
+			// cpu
+			container.setCpuCount(cpus.length);
+			container.setCpuModel(cpus[0].getModel());
+			container.setCpuVendor(cpus[0].getVendor());
+			
+			// disk
+			File file = new File("/");
+			container.setDiskSpaceFree(file.getFreeSpace());
+			container.setDiskSpaceUsed(file.getTotalSpace() - file.getFreeSpace());
+			container.setDiskSpaceTotal(file.getTotalSpace());
+			
+			// os
+			container.setOsDataModel(System.getProperty("sun.arch.data.model"));
+			container.setOsDescription(System.getProperty("os.version"));
+			container.setOsName(System.getProperty("os.name"));
+			
+			// system info
+			container.setHostName(netInfo.getHostName());
+			container.setPrimaryIpAddress(sigar.getFQDN());
+			container.setPrimaryMacAddress(config.getHwaddr());
+			container.setAgentId(config.getHwaddr());
+			
+			maestroService.store(container);
+		}
+		catch(SigarException se) {
+			logger.error(se.getMessage(), se);
+		}
 	}
 
-	private ContainerMan container;
-	final Logger logger;
-	private MaestroService<Container> maestroService;
 }
