@@ -16,6 +16,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 public class Main {
 	
 	public static void main(String[] args) {
+		System.setProperty("java.library.path", "/etc/armada/sigar");
 		ApplicationContext context = new ClassPathXmlApplicationContext("beans/agent-config.xml");
 		Agent agent = (Agent) context.getBean("agent");
 		agent.setAgentId((args == null || args.length < 1)? UUID.randomUUID().toString() : args[0]);
