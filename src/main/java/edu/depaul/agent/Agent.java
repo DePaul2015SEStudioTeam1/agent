@@ -8,6 +8,9 @@ import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import javax.json.Json;
+import javax.json.JsonObject;
+
 import org.apache.log4j.Logger;
 import org.hyperic.sigar.CpuInfo;
 import org.hyperic.sigar.Mem;
@@ -31,6 +34,7 @@ public class Agent implements Runnable {
 	
 	@Override
 	public void run() {
+		//attempt to connect and read json data
 		HttpURLConnection connection = null;
 		
 		try {
@@ -49,7 +53,7 @@ public class Agent implements Runnable {
 							new java.io.InputStreamReader(connection.getInputStream()));
 					
 					String data = null;
-					File file = new File("jsonDump.json");
+					File file = new File("jsonDump.txt");
 					PrintWriter w = new PrintWriter(file);
 					
 					while((data = reader.readLine()) != null) {
@@ -75,7 +79,8 @@ public class Agent implements Runnable {
 			e.printStackTrace();
 		} 
 		
-		/*String JsonData;
+		//attempt to read and parse json data from file first
+		String JsonData;
 		String data = null;
 	
 		try {
@@ -101,7 +106,7 @@ public class Agent implements Runnable {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
-		}*/
+		}
 	}	
 				
 /*
