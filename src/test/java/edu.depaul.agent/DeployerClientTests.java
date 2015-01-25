@@ -12,8 +12,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration("classpath:beans/agent-config.xml")
 public class DeployerClientTests {
 
-	@Autowired
-	private LocalDockerService dockerService;
+//	@Autowired
+//	private LocalDockerService dockerService;
 
 	@Before
 	public void setUp() {
