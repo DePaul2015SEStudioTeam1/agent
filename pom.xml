@@ -9,8 +9,8 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<spring.version>3.0.7.RELEASE</spring.version>
-		<operations-api.version>0.0.1-SNAPSHOT</operations-api.version>
-		<maestro-api.version>0.0.1-SNAPSHOT</maestro-api.version>
+		<!--<operations-api.version>0.0.1-SNAPSHOT</operations-api.version>-->
+		<!--<maestro-api.version>0.0.1-SNAPSHOT</maestro-api.version>-->
 		<jetty.version>9.2.3.v20140905</jetty.version>	
 	</properties>
 
@@ -72,28 +72,6 @@
 						<goals>
 							<goal>shade</goal>
 						</goals>
-						<configuration>
-							<!-- Optional Start -->
-							<finalName>Agent</finalName>
-							<shadedArtifactAttached>true</shadedArtifactAttached>
-							<shadedClassifierName>jar-with-dependencies</shadedClassifierName>
-							<!-- Optional End -->
-
-							<transformers>
-								<transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-									<mainClass>edu.depaul.agent.Main</mainClass>
-								</transformer>
-								<transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
-									<resource>META-INF/spring.handlers</resource>
-								</transformer>
-								<transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
-									<resource>META-INF/spring.schemas</resource>
-								</transformer>
-								<transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
-									<resource>META-INF/spring.tooling</resource>
-								</transformer>
-							</transformers>
-						</configuration>
 					</execution>
 				</executions>
 			</plugin>
@@ -130,50 +108,23 @@
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-beans</artifactId>
-			<version>3.0.7.RELEASE</version>
+			<version>${spring.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-webmvc</artifactId>
 			<version>${spring.version}</version>
 		</dependency>
-		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-core</artifactId>
-			<version>3.5.4-Final</version>
-		</dependency>
-		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-c3p0</artifactId>
-			<version>3.5.4-Final</version>
-			<exclusions>
-				<exclusion>
-					<groupId>org.slf4j</groupId>
-					<artifactId>slf4j-api</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-ehcache</artifactId>
-			<version>3.5.4-Final</version>
-			<exclusions>
-				<exclusion>
-					<groupId>org.slf4j</groupId>
-					<artifactId>slf4j-api</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-		<dependency>
-			<groupId>edu.depaul</groupId>
-			<artifactId>operations-api</artifactId>
-			<version>${operations-api.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>edu.depaul</groupId>
-			<artifactId>maestro-api</artifactId>
-			<version>${maestro-api.version}</version>
-		</dependency>
+		<!--<dependency>-->
+			<!--<groupId>edu.depaul</groupId>-->
+			<!--<artifactId>operations-api</artifactId>-->
+			<!--<version>${operations-api.version}</version>-->
+		<!--</dependency>-->
+		<!--<dependency>-->
+			<!--<groupId>edu.depaul</groupId>-->
+			<!--<artifactId>maestro-api</artifactId>-->
+			<!--<version>${maestro-api.version}</version>-->
+		<!--</dependency>-->
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>

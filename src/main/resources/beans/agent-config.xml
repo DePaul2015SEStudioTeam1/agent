@@ -9,7 +9,7 @@
 	
 	<import resource="classpath:beans/maestro-client.xml"/>
 
-	
+
 	<bean id="agent" class="edu.depaul.agent.Agent">
 		<!-- TODO: enable below property when logging to maestro can be re-linked -->
 		<!--<property name="maestroService" ref="remoteMaestroService"/>-->
