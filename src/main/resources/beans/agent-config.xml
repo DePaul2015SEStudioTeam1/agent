@@ -8,9 +8,11 @@
 		                http://www.springframework.org/schema/context/spring-context-3.0.xsd">
 	
 	<import resource="classpath:beans/maestro-client.xml"/>
+
 	
 	<bean id="agent" class="edu.depaul.agent.Agent">
-		<property name="maestroService" ref="remoteMaestroService"/>
+		<!-- TODO: enable below property when logging to maestro can be re-linked -->
+		<!--<property name="maestroService" ref="remoteMaestroService"/>-->
 	</bean>
 	
 	
