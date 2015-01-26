@@ -1,25 +1,6 @@
 package edu.depaul.agent;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.net.HttpURLConnection;
-import java.net.URL;
-
-import javax.json.Json;
-import javax.json.JsonObject;
-
-import org.apache.log4j.Logger;
-import org.hyperic.sigar.CpuInfo;
-import org.hyperic.sigar.Mem;
-import org.hyperic.sigar.NetInfo;
-import org.hyperic.sigar.NetInterfaceConfig;
-import org.hyperic.sigar.Sigar;
-import org.hyperic.sigar.SigarException;
-
-import edu.depaul.maestro.service.MaestroService;
+//import edu.depaul.maestro.service.MaestroService;
 
 /**
  * 
@@ -120,4 +101,5 @@ public class Agent implements Runnable {
 		}
 
 	} */
+	}
 }
