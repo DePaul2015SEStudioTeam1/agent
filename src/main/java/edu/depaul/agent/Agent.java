@@ -7,12 +7,27 @@ package edu.depaul.agent;
  * @author Deonte D Johnson
  *
  * edit - john davidson, 1/10/2015
+ * edit - Deonte Johnson, 2/2/15
  */
 public class Agent implements Runnable {
 	
 	@Override
 	public void run() {
 			
+		//send cAdvisor's url location to start retrieving data
+		Cadvisor data = new Cadvisor("http://140.192.249.16:8890/api/v1.2/docker");
+				
+		//print a log for each container
+		for(int i = 0; i < data.getNumberOfContainers(); i++) {
+			Container_log log = data.CreateContainerLog(i);
+			System.out.println(log.toString());
+		}
+				
+		//retrieving data from an individual container
+		Container_log l = data.CreateContainerLog(0);
+		String id = l.getContainerID(); //add to DB
+		String cpu_limit = l.getCpuLimit(); //add to DB
+		String cpu_total = l.getCpuTotal(); //add to DB
 /*
 	private static final Logger logger = Logger.getLogger(Agent.class);
 	private Sigar sigar = new Sigar();

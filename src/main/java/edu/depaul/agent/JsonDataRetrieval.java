@@ -6,18 +6,18 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
-import java.util.Map.Entry;
 import javax.json.Json;
 import javax.json.stream.JsonParser;
 import javax.json.stream.JsonParser.Event;
 
+/**
+ * @author Jet2kus84
+ *
+ */
 public class JsonDataRetrieval {
 
 	private JsonParser parser;
-	
+	private String url;
 	private JsonParser openConnection(String _url) {
 		JsonParser p = null;
 		try {
@@ -38,9 +38,23 @@ public class JsonDataRetrieval {
 		
 		return p;
 	}
-		
-	public ArrayList<String> getContainerName(String _url) {
-		parser = this.openConnection(_url);
+	
+	enum CadvisorData {
+		CT, //cpu total
+		CL, //cpu limit
+		TIME, //timestamp
+		MU, //memory usage
+		ML, //memory limit
+		FSC, //filesystem capacity
+		FSU //filesystem usgae
+	}
+	
+	public JsonDataRetrieval(String _url) {
+		this.url = _url;
+	}	
+	
+	ArrayList<String> getContainerName() {
+		parser = this.openConnection(url);
 		
 		java.util.ArrayList<String> containerNames = new java.util.ArrayList<String>();
 		
@@ -48,20 +62,18 @@ public class JsonDataRetrieval {
             Event event = parser.next();
            
             if(event == Event.KEY_NAME) {
-            	
             	if(parser.getString().equalsIgnoreCase("name")) {
             		parser.next(); //VALUE
             		containerNames.add(parser.getString());
-         
             	}
             }
 		}
 		return containerNames;
 	}
 	
-	public ArrayList<String> getContainerAltName(String _url) {
+	ArrayList<String> getContainerAltName() {
 		
-		parser = this.openConnection(_url);
+		parser = this.openConnection(url);
 		
 		java.util.ArrayList<String> altNames = new java.util.ArrayList<String>();
 		
@@ -80,8 +92,8 @@ public class JsonDataRetrieval {
 		return altNames;
 	}
 	
-	public HashMap<String, String> getContainerCpuTotal(String _url) {
-		parser = this.openConnection(_url);
+	HashMap<String, String> getContainerCpuTotal() {
+		parser = this.openConnection(url);
 		
 		java.util.HashMap<String, String> cpu = new java.util.HashMap<String, String>();
 		String k = null, v = null;
@@ -95,13 +107,13 @@ public class JsonDataRetrieval {
             	if(parser.getString().equalsIgnoreCase("aliases")) {
             		parser.next(); // START_ARRAY
             		parser.next(); //Alternative container name
-            		k = parser.getString();
+            		k = parser.getString() + CadvisorData.CT;
             	}
             	
             	//Get cpu total
             	if(parser.getString().equalsIgnoreCase("total")) {
             		parser.next(); //VALUE
-            		v = parser.getString();//cpuTotals.add(parser.getString());
+            		v = parser.getString();
             	}
             	cpu.put(k, v);
             }
@@ -109,8 +121,8 @@ public class JsonDataRetrieval {
 		return cpu;
 	}
 	
-	public HashMap<String, String> getContainerCpuLimit(String _url) {	
-		parser = this.openConnection(_url);
+	HashMap<String, String> getContainerCpuLimit() {	
+		parser = this.openConnection(url);
 		
 		HashMap<String, String> cpu = new java.util.HashMap<String, String>();
 		
@@ -123,7 +135,7 @@ public class JsonDataRetrieval {
             	if(parser.getString().equalsIgnoreCase("aliases")) {
             		parser.next(); // START_ARRAY
             		parser.next(); //Alternative container name
-            		k = parser.getString();
+            		k = parser.getString() + CadvisorData.CL;
             	}
             	
             	//Get cpu limit
@@ -144,8 +156,8 @@ public class JsonDataRetrieval {
 		return cpu;
 	}
 	
-	public HashMap<String, String> getContainerMemoryUsage(String _url) {
-		parser = this.openConnection(_url);
+	HashMap<String, String> getContainerMemoryUsage() {
+		parser = this.openConnection(url);
 		
 		HashMap<String, String> data = new java.util.HashMap<String, String>();
 		String k = null, v = null;
@@ -158,7 +170,7 @@ public class JsonDataRetrieval {
             	if(parser.getString().equalsIgnoreCase("aliases")) {
             		parser.next(); // START_ARRAY
             		parser.next(); //Alternative container name
-            		k = parser.getString();
+            		k = parser.getString() + CadvisorData.MU;
             	}
             	
             	//Get memory usage
@@ -178,8 +190,8 @@ public class JsonDataRetrieval {
 		return data;
 	}
 	
-	public HashMap<String, String> getContinerMemoryLimit(String _url) {
-		parser = this.openConnection(_url);
+	HashMap<String, String> getContinerMemoryLimit() {
+		parser = this.openConnection(url);
 		
 		HashMap<String, String> data = new java.util.HashMap<String, String>();
 		String k = null, v = null;
@@ -192,7 +204,7 @@ public class JsonDataRetrieval {
             	if(parser.getString().equalsIgnoreCase("aliases")) {
             		parser.next(); // START_ARRAY
             		parser.next(); //Alternative container name
-            		k = parser.getString();
+            		k = parser.getString() + CadvisorData.ML;
             	}
             	
             	//Get memory usage
@@ -212,8 +224,8 @@ public class JsonDataRetrieval {
 		return data;
 	}
 	
-	public HashMap<String, String> getContainerFileSystemCapacity(String _url) {
-		parser = this.openConnection(_url);
+	HashMap<String, String> getContainerFileSystemCapacity() {
+		parser = this.openConnection(url);
 		
 		HashMap<String, String> time = new java.util.HashMap<String, String>();
 		
@@ -226,7 +238,7 @@ public class JsonDataRetrieval {
             	if(parser.getString().equalsIgnoreCase("aliases")) {
             		parser.next(); // START_ARRAY
             		parser.next(); //Alternative container name
-            		k = parser.getString();
+            		k = parser.getString() + CadvisorData.FSC;
             	}
             	
             	//Get filesystem capacity
@@ -242,8 +254,8 @@ public class JsonDataRetrieval {
 		return time;
 	}
 	
-	public HashMap<String, String> getContainerFileSystemUsage(String _url) {
-		parser = this.openConnection(_url);
+	HashMap<String, String> getContainerFileSystemUsage() {
+		parser = this.openConnection(url);
 		
 		HashMap<String, String> time = new java.util.HashMap<String, String>();
 		
@@ -256,7 +268,7 @@ public class JsonDataRetrieval {
             	if(parser.getString().equalsIgnoreCase("aliases")) {
             		parser.next(); // START_ARRAY
             		parser.next(); //Alternative container name
-            		k = parser.getString();
+            		k = parser.getString() + CadvisorData.FSU;
             	}
             	
             	//Get filesystem and usage
@@ -274,8 +286,8 @@ public class JsonDataRetrieval {
 		return time;
 	}
 	
-	public HashMap<String, String> getContianerTimestamp(String _url) {
-		parser = this.openConnection(_url);
+	HashMap<String, String> getContianerTimestamp() {
+		parser = this.openConnection(url);
 		
 		HashMap<String, String> time = new java.util.HashMap<String, String>();
 		
@@ -288,13 +300,13 @@ public class JsonDataRetrieval {
             	if(parser.getString().equalsIgnoreCase("aliases")) {
             		parser.next(); // START_ARRAY
             		parser.next(); //Alternative container name
-            		k = parser.getString();
+            		k = parser.getString() + CadvisorData.TIME;
             	}
             	
             	//Get cpu limit
             	if(parser.getString().equalsIgnoreCase("timestamp")) {
             		parser.next();
-            		v = parser.getString();
+            		v = javax.xml.bind.DatatypeConverter.parseDate(parser.getString()).getTime().toString();
                 }
             }
 		    	
@@ -302,40 +314,5 @@ public class JsonDataRetrieval {
 		}
 		
 		return time;
-	}
-		
-	public static void main(String[] args) {
-		for(int i = 0; i < 6; i++)
-			print(i);
-	}
-	
-	//used for main only
-	private static void print(int i) {
-		JsonDataRetrieval data = new JsonDataRetrieval();
-		ArrayList<String> names = data.getContainerAltName("http://140.192.249.16:8890/api/v1.2/docker");
-		ArrayList<HashMap<String, String>> list = new ArrayList<HashMap<String,String>>();
-		
-		list.add(data.getContainerCpuLimit("http://140.192.249.16:8890/api/v1.2/docker"));
-		list.add(data.getContainerCpuTotal("http://140.192.249.16:8890/api/v1.2/docker"));
-		list.add(data.getContianerTimestamp("http://140.192.249.16:8890/api/v1.2/docker"));
-		list.add(data.getContainerMemoryUsage("http://140.192.249.16:8890/api/v1.2/docker"));
-		list.add(data.getContinerMemoryLimit("http://140.192.249.16:8890/api/v1.2/docker"));
-		list.add(data.getContainerFileSystemCapacity("http://140.192.249.16:8890/api/v1.2/docker"));
-		list.add(data.getContainerFileSystemUsage("http://140.192.249.16:8890/api/v1.2/docker"));
-		
-		for(HashMap<String,String> hm : list) {
-			hm.remove(null, null);
-			
-			Set<Entry<String, String>> set = hm.entrySet();
-			Iterator<Entry<String, String>> iterator = set.iterator();
-			
-			while(iterator.hasNext()) {
-				Map.Entry<String, String> _entry = (Map.Entry<String, String>)iterator.next();
-				if(_entry.getKey().equalsIgnoreCase(names.get(i))) {
-					System.out.println("Json Output: " + _entry.getKey() + " : " + _entry.getValue());
-				}
-			}
-		}
-		System.out.println();
 	}
 }
