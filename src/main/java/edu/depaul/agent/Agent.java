@@ -1,7 +1,9 @@
 package edu.depaul.agent;
 
 public class Agent implements Runnable {
-	
+
+	private String id = "";
+
 	@Override
 	public void run() {
 		//send cAdvisor's url location to start retrieving data
@@ -18,5 +20,9 @@ public class Agent implements Runnable {
 		String id = l.getContainerID(); //add to DB
 		String cpu_limit = l.getCpuLimit(); //add to DB
 		String cpu_total = l.getCpuTotal(); //add to DB
+	}
+
+	public void setAgentId(String id) {
+		this.id = id;
 	}
 }

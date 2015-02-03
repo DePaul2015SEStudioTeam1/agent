@@ -86,10 +86,7 @@ public class LogCollector {
 		return logList.get(i);
 	}
 	
-	/**
-	 * 
-	 * @return number of containers running
-	 */
+
 	public int getNumberOfContainers() {
 		return numberOfContainers;
 	}
