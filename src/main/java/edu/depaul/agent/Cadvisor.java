@@ -25,11 +25,11 @@ public class Cadvisor {
 	 * @param i index of container in list of containers running
 	 * @return container at index
 	 */
-	public Container_log CreateContainerLog(int i) {
+	public ContainerLog CreateContainerLog(int i) {
 		ArrayList<String> id = data.getContainerName();
 		ArrayList<String> names = data.getContainerAltName();
 		ArrayList<HashMap<String, String>> list = new ArrayList<HashMap<String,String>>();
-		ArrayList<Container_log> log = new ArrayList<Container_log>();
+		ArrayList<ContainerLog> log = new ArrayList<ContainerLog>();
 		
 		//list to hold hash map data
 		list.add(data.getContainerCpuLimit());
@@ -41,7 +41,7 @@ public class Cadvisor {
 		list.add(data.getContainerFileSystemUsage());
 		
 		//create a new log for each container
-		Container_log _container_log = new Container_log();
+		ContainerLog _container_log = new ContainerLog();
 		
 		//run through each hash map in the array list
 		for(HashMap<String,String> hm : list) {

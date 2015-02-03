@@ -1,6 +1,6 @@
 package edu.depaul.agent;
 
-public class Container_log {
+public class ContainerLog {
 
 	/**
 	 * @author Jet2kus84
@@ -17,7 +17,7 @@ public class Container_log {
 	private String cpu_limit;
 	private String fileSystem_capacity;
 	
-	public Container_log() {
+	public ContainerLog() {
 		id = null;
 		container_id = null;
 		timeStamp = null;

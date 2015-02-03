@@ -19,12 +19,12 @@ public class Agent implements Runnable {
 				
 		//print a log for each container
 		for(int i = 0; i < data.getNumberOfContainers(); i++) {
-			Container_log log = data.CreateContainerLog(i);
+			ContainerLog log = data.CreateContainerLog(i);
 			System.out.println(log.toString());
 		}
 				
 		//retrieving data from an individual container
-		Container_log l = data.CreateContainerLog(0);
+		ContainerLog l = data.CreateContainerLog(0);
 		String id = l.getContainerID(); //add to DB
 		String cpu_limit = l.getCpuLimit(); //add to DB
 		String cpu_total = l.getCpuTotal(); //add to DB
