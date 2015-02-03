@@ -9,7 +9,6 @@ import java.util.Map.Entry;
 
 import edu.depaul.agent.JsonDataRetrieval.CadvisorData;
 
-
 public class LogCollector {
 
 	private int numberOfContainers;
