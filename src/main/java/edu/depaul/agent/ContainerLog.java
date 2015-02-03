@@ -43,18 +43,18 @@ public class ContainerLog {
 	
 	/**
 	 * 
-	 * @param _id container second aliases
+	 * @param id container second aliases
 	 */
-	void setID(String _id) {
-		this.id = _id;
+	void setID(String id) {
+		this.id = id;
 	}
 	
 	/**
 	 * 
-	 * @param id container id
+	 * @param containerId container id
 	 */
-	void setContainerID(String id) {
-		this.containerId = id;
+	void setContainerID(String containerId) {
+		this.containerId = containerId;
 	}
 	
 	/**
