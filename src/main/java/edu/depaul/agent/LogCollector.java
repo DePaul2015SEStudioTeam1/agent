@@ -7,8 +7,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Map.Entry;
 
-import edu.depaul.agent.JsonDataRetrieval.CadvisorData;
-
 public class LogCollector {
 
 	private int numberOfContainers;
@@ -58,25 +56,25 @@ public class LogCollector {
 				//get container id
 				containerLog.setContainerID(containerIds.get(i));
 				
-				if(_entry.getKey().equalsIgnoreCase(containerNames.get(i) + CadvisorData.CL)) {
+				if(_entry.getKey().equalsIgnoreCase(containerNames.get(i) + JsonDataRetrieval.CAdvisorData.CPU_LIMIT)) {
 					containerLog.setCpuLimit(_entry.getValue());
 					
-				} else if(_entry.getKey().equalsIgnoreCase(containerNames.get(i) + CadvisorData.CT)) {
+				} else if(_entry.getKey().equalsIgnoreCase(containerNames.get(i) + JsonDataRetrieval.CAdvisorData.CPU_TOTAL)) {
 					containerLog.setCpuTotal(_entry.getValue());
 					
-				} else if(_entry.getKey().equalsIgnoreCase(containerNames.get(i) + CadvisorData.TIME)) {
+				} else if(_entry.getKey().equalsIgnoreCase(containerNames.get(i) + JsonDataRetrieval.CAdvisorData.TIMESTAMP)) {
 					containerLog.setTimeStamp(_entry.getValue());
 					
-				} else if(_entry.getKey().equalsIgnoreCase(containerNames.get(i) + CadvisorData.MU)) {
+				} else if(_entry.getKey().equalsIgnoreCase(containerNames.get(i) + JsonDataRetrieval.CAdvisorData.MEMORY_USAGE)) {
 					containerLog.setMemUsage(_entry.getValue());
 					
-				} else if(_entry.getKey().equalsIgnoreCase(containerNames.get(i) + CadvisorData.ML)) {
+				} else if(_entry.getKey().equalsIgnoreCase(containerNames.get(i) + JsonDataRetrieval.CAdvisorData.MEMORY_LIMIT)) {
 					containerLog.setMemLimit(_entry.getValue());
 					
-				} else if(_entry.getKey().equalsIgnoreCase(containerNames.get(i) + CadvisorData.FSC)) {
+				} else if(_entry.getKey().equalsIgnoreCase(containerNames.get(i) + JsonDataRetrieval.CAdvisorData.FILESYSTEM_CAPACITY)) {
 					containerLog.setFileSystemCapacity(_entry.getValue());
 					
-				} else if(_entry.getKey().equalsIgnoreCase(containerNames.get(i) + CadvisorData.FSU)) {
+				} else if(_entry.getKey().equalsIgnoreCase(containerNames.get(i) + JsonDataRetrieval.CAdvisorData.FILESYSTEM_USAGE)) {
 					containerLog.setFileSystem_Usage(_entry.getValue());
 				}
 			}
