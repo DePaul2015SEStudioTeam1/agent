@@ -12,7 +12,7 @@ import edu.depaul.agent.LocalDockerService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("classpath:beans/agent-config.xml")
-public class DeployerClientTests {
+public class DeployerClientTest {
 
 	@Autowired
 	private LocalDockerService dockerService;

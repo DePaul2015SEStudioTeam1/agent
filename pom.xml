@@ -9,7 +9,7 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<spring.version>3.0.7.RELEASE</spring.version>
-		<operations-api.version>0.0.1-SNAPSHOT</operations-api.version>
+		<agent-api.version>0.0.1-SNAPSHOT</agent-api.version>
 		<armada-api.version>0.0.1-SNAPSHOT</armada-api.version>
 	</properties>
 
@@ -170,6 +170,11 @@
 			<artifactId>armada-api</artifactId>
 			<version>${armada-api.version}</version>
 		</dependency>
+        <dependency>
+            <groupId>edu.depaul</groupId>
+            <artifactId>agent-api</artifactId>
+            <version>${agent-api.version}</version>
+        </dependency>
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
