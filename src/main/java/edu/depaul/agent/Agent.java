@@ -1,8 +1,16 @@
 package edu.depaul.agent;
 
+import edu.depaul.armada.model.Container;
+import edu.depaul.armada.service.ArmadaService;
+
 public class Agent implements Runnable {
 
+	private ArmadaService<Container> _armadaService; 
 	private String id = "";
+	
+	public void setArmadaService(ArmadaService<Container> armadaService) {
+		_armadaService = armadaService;
+	}
 
 	@Override
 	public void run() {
