@@ -1,11 +1,14 @@
 package edu.depaul.agent;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.Set;
 import java.util.Map.Entry;
+import java.util.Set;
+
+import edu.depaul.armada.model.ContainerLog;
 
 public class LogCollector {
 
@@ -48,34 +51,19 @@ public class LogCollector {
 			Iterator<Entry<String, String>> iterator = set.iterator();
 			
 			while(iterator.hasNext()) {
-				Map.Entry<String, String> _entry = (Map.Entry<String, String>)iterator.next();
+				Map.Entry<String, String> entry = (Map.Entry<String, String>)iterator.next();
 				
 				//get the containers alt id
-				containerLog.setID(containerNames.get(i));
+				containerLog.setContainerId(containerNames.get(i));
 				
-				//get container id
-				containerLog.setContainerID(containerIds.get(i));
-				
-				if(_entry.getKey().equalsIgnoreCase(containerNames.get(i) + JsonDataRetrieval.CAdvisorData.CPU_LIMIT)) {
-					containerLog.setCpuLimit(_entry.getValue());
-					
-				} else if(_entry.getKey().equalsIgnoreCase(containerNames.get(i) + JsonDataRetrieval.CAdvisorData.CPU_TOTAL)) {
-					containerLog.setCpuTotal(_entry.getValue());
-					
-				} else if(_entry.getKey().equalsIgnoreCase(containerNames.get(i) + JsonDataRetrieval.CAdvisorData.TIMESTAMP)) {
-					containerLog.setTimeStamp(_entry.getValue());
-					
-				} else if(_entry.getKey().equalsIgnoreCase(containerNames.get(i) + JsonDataRetrieval.CAdvisorData.MEMORY_USAGE)) {
-					containerLog.setMemUsage(_entry.getValue());
-					
-				} else if(_entry.getKey().equalsIgnoreCase(containerNames.get(i) + JsonDataRetrieval.CAdvisorData.MEMORY_LIMIT)) {
-					containerLog.setMemLimit(_entry.getValue());
-					
-				} else if(_entry.getKey().equalsIgnoreCase(containerNames.get(i) + JsonDataRetrieval.CAdvisorData.FILESYSTEM_CAPACITY)) {
-					containerLog.setFileSystemCapacity(_entry.getValue());
-					
-				} else if(_entry.getKey().equalsIgnoreCase(containerNames.get(i) + JsonDataRetrieval.CAdvisorData.FILESYSTEM_USAGE)) {
-					containerLog.setFileSystem_Usage(_entry.getValue());
+				if(entry.getKey().equalsIgnoreCase(containerNames.get(i) + JsonDataRetrieval.CAdvisorData.CPU_TOTAL)) {
+					containerLog.setTotalCpuUsage(new BigInteger(entry.getValue()).longValue());
+				} else if(entry.getKey().equalsIgnoreCase(containerNames.get(i) + JsonDataRetrieval.CAdvisorData.TIMESTAMP)) {
+					containerLog.setTimestamp(entry.getValue());					
+				} else if(entry.getKey().equalsIgnoreCase(containerNames.get(i) + JsonDataRetrieval.CAdvisorData.MEMORY_USAGE)) {
+					containerLog.setMemUsage(new BigInteger(entry.getValue()).longValue());
+				} else if(entry.getKey().equalsIgnoreCase(containerNames.get(i) + JsonDataRetrieval.CAdvisorData.FILESYSTEM_USAGE)) {
+					containerLog.setFilesystemUsage(new BigInteger(entry.getValue()).longValue());
 				}
 			}
 			logList.add(containerLog);

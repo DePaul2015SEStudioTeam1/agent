@@ -9,7 +9,7 @@
 	
 	<import resource="classpath:beans/armada-client.xml"/>
 	
-	<bean id="agent" class="edu.depaul.agent.Agent">
+	<bean id="logCollectionTask" class="edu.depaul.agent.LogCollectionTask">
 		<property name="armadaService" ref="remoteArmadaService"/>
 	</bean>
 	

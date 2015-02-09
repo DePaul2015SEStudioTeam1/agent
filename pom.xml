@@ -42,7 +42,7 @@
 				<configuration>
 					<archive>
 						<manifest>
-							<mainClass>edu.depaul.agent.Main</mainClass>
+							<mainClass>edu.depaul.agent.Agent</mainClass>
 						</manifest>
 					</archive>
 					<descriptorRefs>
@@ -71,7 +71,7 @@
 							<transformers>
 								<transformer
 									implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-									<mainClass>edu.depaul.agent.Main</mainClass>
+									<mainClass>edu.depaul.agent.Agent</mainClass>
 								</transformer>
 								<transformer
 									implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
@@ -124,7 +124,14 @@
 			<groupId>javax.json</groupId>
 			<artifactId>javax.json-api</artifactId>
 			<version>1.0</version>
+			<scope>compile</scope>
 		</dependency>
+		<dependency>
+		    <groupId>org.glassfish</groupId>
+		    <artifactId>javax.json</artifactId>
+		    <version>1.0.4</version>
+		    <scope>runtime</scope>
+		</dependency>		
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-core</artifactId>

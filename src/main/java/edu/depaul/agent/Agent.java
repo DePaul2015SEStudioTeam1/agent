@@ -1,39 +1,26 @@
 package edu.depaul.agent;
 
-import edu.depaul.armada.model.Container;
-import edu.depaul.armada.service.ArmadaService;
+import java.util.UUID;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
-public class Agent implements Runnable {
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-	private ArmadaService<Container> _armadaService; 
-	private String id = "";
+/**
+ * Starts the agent.
+ * 
+ * @author Deonte D Johnson
+ */
+public class Agent {
 	
-	public void setArmadaService(ArmadaService<Container> armadaService) {
-		_armadaService = armadaService;
-	}
+	public static void main(String[] args) {
+		ApplicationContext context = new ClassPathXmlApplicationContext("beans/agent-config.xml");
+		LogCollectionTask logCollectionTask = (LogCollectionTask) context.getBean("logCollectionTask");
+		logCollectionTask.setAgentId((args == null || args.length < 1)? UUID.randomUUID().toString() : args[0]);
 
-	@Override
-	public void run() {
-		//TODO: are we instantiating a new LogCollector every time run() happens?
-		//TODO: maybe do this once on startup
-		//send cAdvisor's url location to start retrieving data
-		LogCollector data = new LogCollector("http://140.192.249.16:8890/api/v1.2/docker");
-
-		//TODO: can remove print statements
-		//print a log for each container
-		for(int i = 0; i < data.getNumberOfContainers(); i++) {
-			ContainerLog log = data.createContainerLog(i);
-			System.out.println(log.toString());
-		}
-
-		//TODO: this not being utilized
-		ContainerLog l = data.createContainerLog(0);
-		String id = l.getContainerID();
-		String cpu_limit = l.getCpuLimit();
-		String cpu_total = l.getCpuTotal();
-	}
-
-	public void setAgentId(String id) {
-		this.id = id;
+		ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
+		executor.scheduleAtFixedRate(logCollectionTask, 1, 1, TimeUnit.SECONDS);
 	}
 }
