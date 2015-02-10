@@ -10,7 +10,7 @@ import javax.json.stream.JsonParser;
 import javax.json.stream.JsonParser.Event;
 
 /**
- * @author Jet2kus84
+ * @author Deonte Johnson
  *
  */
 public class JsonDataRetrieval {

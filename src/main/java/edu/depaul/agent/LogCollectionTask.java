@@ -3,8 +3,7 @@ package edu.depaul.agent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import edu.depaul.armada.model.Container;
-import edu.depaul.armada.model.ContainerLog;
+import edu.depaul.armada.model.AgentContainer;
 import edu.depaul.armada.service.ArmadaService;
 
 public class LogCollectionTask implements Runnable {
@@ -30,18 +29,18 @@ public class LogCollectionTask implements Runnable {
 			//TODO: can remove print statements
 			//print a log for each container
 			for(int i = 0; i < data.getNumberOfContainers(); i++) {
-				ContainerLog log = data.createContainerLog(i);
-				armadaService.store(log);
+				AgentContainer log = data.createContainerLog(i);
+				//armadaService.store(log);
 				logger.info("Saved log!");
 			}
 	
-			Container container = new Container();
-			ContainerLog log = data.createContainerLog(0);
-			container.setContainerId(log.getContainerId());
-			container.setCpuLimit(10L);
-			container.setFilesystemCapacity(50L);
-			container.setMemLimit(25L);
-			armadaService.store(container);
+			//Container container = new Container();
+			AgentContainer log = data.createContainerLog(0);
+			//container.setContainerUniqueId(log.getContainerUniqueId());
+			//container.setCpuLimit(10L);
+			//container.setFilesystemCapacity(50L);
+			//container.setMemLimit(25L);
+			//armadaService.store(container);
 			
 			logger.info("Saved container!");
 		
