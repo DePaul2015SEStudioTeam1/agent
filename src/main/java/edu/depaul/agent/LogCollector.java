@@ -26,7 +26,11 @@ public class LogCollector {
 	 * @return container at index
 	 */
 	public ContainerLog createContainerLog(int i) {
+		
+		//container unique id
 		ArrayList<String> containerIds = data.getContainerName();
+		
+		//retrieve container by alternative aliases 
 		ArrayList<String> containerNames = data.getContainerAltName();
 		ArrayList<HashMap<String, String>> statisticMapList = new ArrayList<HashMap<String,String>>();
 		ArrayList<ContainerLog> logList = new ArrayList<ContainerLog>();
@@ -53,8 +57,8 @@ public class LogCollector {
 			while(iterator.hasNext()) {
 				Map.Entry<String, String> entry = (Map.Entry<String, String>)iterator.next();
 				
-				//get the containers alt id
-				containerLog.setContainerId(containerNames.get(i));
+				//get the container(s) unique id
+				containerLog.setContainerId(containerIds.get(i));
 				
 				if(entry.getKey().equalsIgnoreCase(containerNames.get(i) + JsonDataRetrieval.CAdvisorData.CPU_TOTAL)) {
 					containerLog.setTotalCpuUsage(new BigInteger(entry.getValue()).longValue());
