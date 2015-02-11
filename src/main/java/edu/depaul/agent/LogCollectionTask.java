@@ -30,19 +30,9 @@ public class LogCollectionTask implements Runnable {
 			//print a log for each container
 			for(int i = 0; i < data.getNumberOfContainers(); i++) {
 				AgentContainer log = data.createContainerLog(i);
-				//armadaService.store(log);
+				armadaService.send(log);
 				logger.info("Saved log!");
 			}
-	
-			//Container container = new Container();
-			AgentContainer log = data.createContainerLog(0);
-			//container.setContainerUniqueId(log.getContainerUniqueId());
-			//container.setCpuLimit(10L);
-			//container.setFilesystemCapacity(50L);
-			//container.setMemLimit(25L);
-			//armadaService.store(container);
-			
-			logger.info("Saved container!");
 		
 		}
 		catch(Exception e) {
