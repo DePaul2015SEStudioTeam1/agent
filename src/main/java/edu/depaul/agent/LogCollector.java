@@ -8,7 +8,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import edu.depaul.armada.model.*;
+import edu.depaul.armada.model.AgentContainer;
 
 public class LogCollector {
 
@@ -69,7 +69,7 @@ public class LogCollector {
 				containerLog.cAdvisorURL = url;
 							
 				if(entry.getKey().equalsIgnoreCase(containerNames.get(i) + JsonDataRetrieval.CAdvisorData.CPU_TOTAL)) {
-					containerLog.cpu = new BigInteger(entry.getValue()).longValue();
+					containerLog.cpuTotal = new BigInteger(entry.getValue()).longValue();
 				} else if(entry.getKey().equalsIgnoreCase(containerNames.get(i) + JsonDataRetrieval.CAdvisorData.TIMESTAMP)) {
 					//containerLog.timestamp = new java.sql.TimeStamp(entry.getValue()); //convert to time stamp			
 				} else if(entry.getKey().equalsIgnoreCase(containerNames.get(i) + JsonDataRetrieval.CAdvisorData.MEMORY_USAGE)) {
