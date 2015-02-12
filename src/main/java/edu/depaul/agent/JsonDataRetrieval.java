@@ -5,9 +5,12 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
+
 import javax.json.Json;
 import javax.json.stream.JsonParser;
 import javax.json.stream.JsonParser.Event;
+
+import org.apache.commons.lang.time.DateFormatUtils;
 
 /**
  * @author Deonte Johnson
@@ -298,7 +301,7 @@ public class JsonDataRetrieval {
             	//Get cpu limit
             	if(jsonParser.getString().equalsIgnoreCase("timestamp")) {
             		jsonParser.next();
-            		v = javax.xml.bind.DatatypeConverter.parseDate(jsonParser.getString()).getTime().toString();
+            		v = DateFormatUtils.format(javax.xml.bind.DatatypeConverter.parseDate(jsonParser.getString()).getTime(), "yyyy-MM-dd hh:mm:ss");
                 }
             }
 		    	

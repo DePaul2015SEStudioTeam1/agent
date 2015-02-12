@@ -71,7 +71,8 @@ public class LogCollector {
 				if(entry.getKey().equalsIgnoreCase(containerNames.get(i) + JsonDataRetrieval.CAdvisorData.CPU_TOTAL)) {
 					containerLog.cpuTotal = new BigInteger(entry.getValue()).longValue();
 				} else if(entry.getKey().equalsIgnoreCase(containerNames.get(i) + JsonDataRetrieval.CAdvisorData.TIMESTAMP)) {
-					//containerLog.timestamp = new java.sql.TimeStamp(entry.getValue()); //convert to time stamp			
+					System.out.println(entry.getValue());
+					containerLog.timestamp = java.sql.Timestamp.valueOf(entry.getValue());			
 				} else if(entry.getKey().equalsIgnoreCase(containerNames.get(i) + JsonDataRetrieval.CAdvisorData.MEMORY_USAGE)) {
 					containerLog.memUsed = new BigInteger(entry.getValue()).longValue();
 				} else if(entry.getKey().equalsIgnoreCase(containerNames.get(i) + JsonDataRetrieval.CAdvisorData.FILESYSTEM_USAGE)) {
