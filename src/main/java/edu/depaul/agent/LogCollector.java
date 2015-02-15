@@ -10,6 +10,13 @@ import java.util.Set;
 
 import edu.depaul.armada.model.AgentContainer;
 
+/**
+ * 
+ * @author Deonte Johnson
+ * 
+ * modified 2/15/15 - Deonte
+ *
+ */
 public class LogCollector {
 
 	private int numberOfContainers;
@@ -17,6 +24,9 @@ public class LogCollector {
 	private String url;
 	
 	public LogCollector(String _url) {
+		if(_url == null) {
+			throw new IllegalArgumentException();
+		} 
 		this.url = _url;
 		data = new JsonDataRetrieval(_url);
 		numberOfContainers = data.getContainerName().size();
@@ -29,6 +39,10 @@ public class LogCollector {
 	 */
 	public AgentContainer createContainerLog(int i) {
 		
+		if((i >= numberOfContainers) || (i < 0))
+			throw new IllegalArgumentException
+			("index must be between 0 - " + (numberOfContainers-1));
+		
 		//container unique id
 		ArrayList<String> containerUniqueIds = data.getContainerName();
 		
@@ -37,7 +51,6 @@ public class LogCollector {
 		ArrayList<HashMap<String, String>> statisticMapList = new ArrayList<HashMap<String,String>>();
 		ArrayList<AgentContainer> logList = new ArrayList<AgentContainer>();
 		
-		//list to hold hash map data DATA MUST BE IN THIS ORDER WHEN PLACING IN AgentContainer OBJECT
 		statisticMapList.add(data.getContainerCpuLimit());
 		statisticMapList.add(data.getContainerCpuTotal());
 		statisticMapList.add(data.getContianerTimestamp());
@@ -71,7 +84,6 @@ public class LogCollector {
 				if(entry.getKey().equalsIgnoreCase(containerNames.get(i) + JsonDataRetrieval.CAdvisorData.CPU_TOTAL)) {
 					containerLog.cpuTotal = new BigInteger(entry.getValue()).longValue();
 				} else if(entry.getKey().equalsIgnoreCase(containerNames.get(i) + JsonDataRetrieval.CAdvisorData.TIMESTAMP)) {
-					System.out.println(entry.getValue());
 					containerLog.timestamp = java.sql.Timestamp.valueOf(entry.getValue());			
 				} else if(entry.getKey().equalsIgnoreCase(containerNames.get(i) + JsonDataRetrieval.CAdvisorData.MEMORY_USAGE)) {
 					containerLog.memUsed = new BigInteger(entry.getValue()).longValue();
@@ -80,9 +92,10 @@ public class LogCollector {
 				} else if(entry.getKey().equalsIgnoreCase(containerNames.get(i) + JsonDataRetrieval.CAdvisorData.FILESYSTEM_CAPACITY)) {
 					containerLog.filesystemTotal = new BigInteger(entry.getValue()).longValue();
 				} else if(entry.getKey().equalsIgnoreCase(containerNames.get(i) + JsonDataRetrieval.CAdvisorData.MEMORY_LIMIT)) {
-					containerLog.memTotal = new BigInteger(entry.getValue()).longValue();
+					//memTotal kept coming out to -1, this fixed the issue - DJ
+					containerLog.memTotal = (long) Double.parseDouble(entry.getValue());//new BigInteger(entry.getValue()).longValue();
 				} else if(entry.getKey().equalsIgnoreCase(containerNames.get(i) + JsonDataRetrieval.CAdvisorData.CPU_LIMIT)) {
-					containerLog.cpuUsed = new BigInteger(entry.getValue()).longValue(); //CHECK THIS
+					containerLog.cpuUsed = new BigInteger(entry.getValue()).longValue(); 
 				}
 			}
 			logList.add(containerLog);
