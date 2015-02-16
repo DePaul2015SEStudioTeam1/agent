@@ -1,10 +1,12 @@
 package edu.depaul.agent;
 
+import edu.depaul.armada.model.AgentContainer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import edu.depaul.armada.model.AgentContainer;
 import edu.depaul.armada.service.ArmadaService;
+
+import java.util.List;
 
 public class LogCollectionTask implements Runnable {
 	
@@ -20,20 +22,31 @@ public class LogCollectionTask implements Runnable {
 	@Override
 	public void run() {
 		try {
-		
-			//TODO: are we instantiating a new LogCollector every time run() happens?
-			//TODO: maybe do this once on startup
-			//send cAdvisor's url location to start retrieving data
-			LogCollector data = new LogCollector("http://140.192.249.16:8890/api/v1.2/docker");
-	
-			//TODO: can remove print statements
-			//print a log for each container
-			for(int i = 0; i < data.getNumberOfContainers(); i++) {
-				AgentContainer log = data.createContainerLog(i);
-				armadaService.send(log);
-				logger.info("Saved log!");
+
+			LogCollector.connect();
+			List<ContainerLog> logList = LogCollector.getCurrentLogs();
+
+			/**
+			 * TODO: clean this up in class
+			 * This is the old code, which creates an "AgentContainer" called log.
+			 *
+			 * Let's refactor this; the name "AgentContainer" doesn't make sense,
+			 *  and sounds like an object that singularly describes the static aspects
+			 *  of each container.
+			 * It should be something along the lines of "AgentContainerLog" or something.
+			 * we can then call armadaService.send(log).
+			 *
+			 * For now, I'm test printing like we were before.
+			 */
+//			for(int i = 0; i < data.getNumberOfContainers(); i++) {
+//				AgentContainer log = data.createContainerLog(i);
+//			armadaService.send(log);
+//				logger.info("Saved log!");
+//			}
+
+			for (ContainerLog log : logList) {
+				System.out.println(log);
 			}
-		
 		}
 		catch(Exception e) {
 			e.printStackTrace();
