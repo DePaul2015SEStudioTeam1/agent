@@ -20,9 +20,6 @@ import java.io.InputStream;
 import java.io.StringWriter;
 import java.util.List;
 
-/**
- * Created by john davidson on 10/24/14.
- */
 @Component
 public class LocalDockerService {
 

@@ -9,11 +9,6 @@ import java.util.concurrent.TimeUnit;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-/**
- * Starts the agent.
- * 
- * @author Deonte D Johnson
- */
 public class Agent {
 	
 	public static void main(String[] args) {
@@ -22,20 +17,6 @@ public class Agent {
 		logCollectionTask.setAgentId((args == null || args.length < 1)? UUID.randomUUID().toString() : args[0]);
 
 		ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
-		executor.scheduleAtFixedRate(logCollectionTask, 1, 1, TimeUnit.SECONDS);
-
-
-
-
-
-
-
-		LogCollector.connect();
-		List<ContainerLog> logList = LogCollector.getCurrentLogs();
-
-		//test print
-		for (ContainerLog log : logList) {
-			System.out.println(log);
-		}
+		executor.scheduleAtFixedRate(logCollectionTask, 3, 5, TimeUnit.SECONDS);
 	}
 }
