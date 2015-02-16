@@ -1,5 +1,6 @@
 package edu.depaul.agent;
 
+import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -22,5 +23,19 @@ public class Agent {
 
 		ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
 		executor.scheduleAtFixedRate(logCollectionTask, 1, 1, TimeUnit.SECONDS);
+
+
+
+
+
+
+
+		LogCollector.connect();
+		List<ContainerLog> logList = LogCollector.getCurrentLogs();
+
+		//test print
+		for (ContainerLog log : logList) {
+			System.out.println(log);
+		}
 	}
 }
