@@ -1,12 +1,12 @@
 package edu.depaul.agent;
 
-import edu.depaul.armada.model.AgentContainer;
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import edu.depaul.armada.model.AgentContainerLog;
 import edu.depaul.armada.service.ArmadaService;
-
-import java.util.List;
 
 public class LogCollectionTask implements Runnable {
 	
@@ -24,29 +24,17 @@ public class LogCollectionTask implements Runnable {
 		try {
 
 			LogCollector.connect();
-			List<ContainerLog> logList = LogCollector.getCurrentLogs();
+			// AgentContainerLog is a DTO used by the agent to send data over to 
+			// the Armada. It's is used to send in all the info that is 
+			// needed to save logs
+			List<AgentContainerLog> data = LogCollector.getCurrentLogs();
 
-			/**
-			 * TODO: clean this up in class
-			 * This is the old code, which creates an "AgentContainer" called log.
-			 *
-			 * Let's refactor this; the name "AgentContainer" doesn't make sense,
-			 *  and sounds like an object that singularly describes the static aspects
-			 *  of each container.
-			 * It should be something along the lines of "AgentContainerLog" or something.
-			 * we can then call armadaService.send(log).
-			 *
-			 * For now, I'm test printing like we were before.
-			 */
-//			for(int i = 0; i < data.getNumberOfContainers(); i++) {
-//				AgentContainer log = data.createContainerLog(i);
-//			armadaService.send(log);
-//				logger.info("Saved log!");
-//			}
-
-			for (ContainerLog log : logList) {
-				System.out.println(log);
+			for(int i = 0; i < data.size(); i++) {
+				AgentContainerLog log = data.get(i);
+				armadaService.send(log);
+				logger.info("Saved log!");
 			}
+
 		}
 		catch(Exception e) {
 			e.printStackTrace();

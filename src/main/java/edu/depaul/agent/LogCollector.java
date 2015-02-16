@@ -3,11 +3,17 @@ package edu.depaul.agent;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.json.Json;
 import javax.json.stream.JsonParser;
+
+import org.apache.commons.lang.time.DateUtils;
+
+import edu.depaul.armada.model.AgentContainerLog;
 
 /**
  * 
@@ -38,13 +44,13 @@ public class LogCollector {
 	 *
 	 *      @return  List of ContainerLog
 	 */
-	public static List<ContainerLog> getCurrentLogs(){
-		final List<ContainerLog> logList = new ArrayList<>();
+	public static List<AgentContainerLog> getCurrentLogs(){
+		final List<AgentContainerLog> logList = new ArrayList<>();
 		parseJson(logList);
 		return logList;
 	}
 
-	private static void parseJson(final List<ContainerLog> logList) {
+	private static void parseJson(final List<AgentContainerLog> logList) {
 		/**
 		 * Logic:
 		 *      1. while jsonParser has next
@@ -54,7 +60,7 @@ public class LogCollector {
 		 *      2. exit when all containers have been stepped into
 		 */
 		while (jsonParser.hasNext()) {
-			ContainerLog containerLog = new ContainerLog();
+			AgentContainerLog containerLog = new AgentContainerLog();
 			JsonParser.Event nextContainerId = jsonParser.next();
 			nextContainerId = jsonParser.next();
 			populateLog(containerLog);
@@ -62,7 +68,7 @@ public class LogCollector {
 		}
 	}
 
-	private static void populateLog(final ContainerLog containerLog) {
+	private static void populateLog(final AgentContainerLog containerLog) {
 		/**
 		 * JSON is structured like this...
 		 *
@@ -86,31 +92,33 @@ public class LogCollector {
 
 
 
-			containerLog.setContainerID(jsonParser.getString());
+			containerLog.containerUniqueId = jsonParser.getString();
 
 			iterateParserUntilKeyMatch("timestamp");
 			nextJson(); //select timestamp value
-			containerLog.setTimeStamp(jsonParser.getString());
+			String timestamp = jsonParser.getString();
+			Date date = DateUtils.parseDate(timestamp, new String[]{"yyyy-MM-dd hh:mm:ss.SSSZ"});
+			containerLog.timestamp = new Timestamp(date.getTime());
 
 			iterateParserUntilKeyMatch("cpu");
 			iterateParserUntilKeyMatch("total");
 			nextJson(); //select total cpu usage
-			containerLog.setCpuTotal(jsonParser.getString());
+			containerLog.cpuTotal = jsonParser.getLong();
 
 			iterateParserUntilKeyMatch("memory");
 			iterateParserUntilKeyMatch("usage");
 			nextJson();
-			containerLog.setMemUsage(jsonParser.getString());
+			containerLog.memUsed = jsonParser.getLong();
 
 			iterateParserUntilKeyMatch("filesystem");
 			iterateParserUntilKeyMatch("usage");
 			nextJson();
-			containerLog.setFileSystemUsage(jsonParser.getString());
+			containerLog.diskUsed = jsonParser.getLong();
 
 
 			iterateParserUntilKeyMatch("//.*//.*");
-		} catch (NullPointerException npe) {
-			npe.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 
 	}

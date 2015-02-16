@@ -1,14 +1,5 @@
 package edu.depaul.agent;
 
-import static org.junit.Assert.*;
-
-import java.net.MalformedURLException;
-
-import junit.framework.Assert;
-
-import org.junit.Test;
-
-import edu.depaul.armada.model.AgentContainer;
 
 public class LogCollectorTest {
 
