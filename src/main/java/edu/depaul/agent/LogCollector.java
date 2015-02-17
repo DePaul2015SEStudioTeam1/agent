@@ -82,7 +82,7 @@ public class LogCollector {
 			setContainerFilesystemCapacity(containerLog);
 			setContainerFilesystemUsage(containerLog);
 
-			iterateParserUntilKeyMatch("//.*//.*");
+			iterateParserUntilKeyMatch("/.*/.*");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -98,7 +98,7 @@ public class LogCollector {
 		iterateParserUntilKeyMatch("aliases"); //"aliases" holds the human readable name
 		nextJson();
 		nextJson(); //iterate twice, since it is the beginning of an array
-		containerLog.containerUniqueId = jsonParser.getString();
+		containerLog.name = jsonParser.getString();
 	}
 
 	private static void setContainerCpuLimit(AgentContainerLog containerLog) throws Exception {
