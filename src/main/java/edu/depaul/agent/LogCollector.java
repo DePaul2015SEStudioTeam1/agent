@@ -61,8 +61,6 @@ public class LogCollector {
 		 */
 		while (jsonParser.hasNext()) {
 			AgentContainerLog containerLog = new AgentContainerLog();
-//			JsonParser.Event nextContainerId = jsonParser.next();
-//			nextContainerId = jsonParser.next();
 			populateLog(containerLog);
 			logList.add(containerLog);
 		}
