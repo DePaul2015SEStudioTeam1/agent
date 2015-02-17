@@ -89,15 +89,12 @@ public class LogCollector {
 		 */
 		try {
 
-
-
-
 			containerLog.containerUniqueId = jsonParser.getString();
 
 			iterateParserUntilKeyMatch("timestamp");
 			nextJson(); //select timestamp value
 			String timestamp = jsonParser.getString();
-			Date date = DateUtils.parseDate(timestamp, new String[]{"yyyy-MM-dd hh:mm:ss.SSSZ"});
+			Date date = DateUtils.parseDate(timestamp, new String[]{"yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"});
 			containerLog.timestamp = new Timestamp(date.getTime());
 
 			iterateParserUntilKeyMatch("cpu");
@@ -114,6 +111,10 @@ public class LogCollector {
 			iterateParserUntilKeyMatch("usage");
 			nextJson();
 			containerLog.diskUsed = jsonParser.getLong();
+			
+			iterateParserUntilKeyMatch("name");
+			nextJson();
+			containerLog.name = jsonParser.getString();
 
 
 			iterateParserUntilKeyMatch("//.*//.*");
