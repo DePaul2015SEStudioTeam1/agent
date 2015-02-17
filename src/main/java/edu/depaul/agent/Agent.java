@@ -1,6 +1,5 @@
 package edu.depaul.agent;
 
-import java.util.UUID;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -19,7 +18,6 @@ public class Agent {
 		System.getProperties().setProperty("armada.service.url", args[0]);
 		ApplicationContext context = new ClassPathXmlApplicationContext("beans/agent-config.xml");
 		LogCollectionTask logCollectionTask = (LogCollectionTask) context.getBean("logCollectionTask");
-		logCollectionTask.setAgentId((args == null || args.length < 1)? UUID.randomUUID().toString() : args[0]);
 
 		ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
 		executor.scheduleAtFixedRate(logCollectionTask, 5, 5, TimeUnit.SECONDS);
