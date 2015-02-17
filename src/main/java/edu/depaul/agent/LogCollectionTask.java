@@ -13,7 +13,12 @@ public class LogCollectionTask implements Runnable {
 	
 	private static final Logger logger = LoggerFactory.getLogger(LogCollectionTask.class);
 
+	private LogCollector logCollector;
 	private ArmadaService armadaService; 
+	
+	public void setLogCollector(LogCollector logCollector){
+		this.logCollector = logCollector;
+	}
 	
 	public void setArmadaService(ArmadaService armadaService) {
 		this.armadaService = armadaService;
@@ -22,16 +27,15 @@ public class LogCollectionTask implements Runnable {
 	@Override
 	public void run() {
 		try {
-
-			LogCollector.connect();
 			// AgentContainerLog is a DTO used by the agent to send data over to 
 			// the Armada. It's is used to send in all the info that is 
 			// needed to save logs
-			List<AgentContainerLog> data = LogCollector.getCurrentLogs();
+			List<AgentContainerLog> data = logCollector.getCurrentLogs();
 			for(int i = 0; i < data.size(); i++) {
 				AgentContainerLog log = data.get(i);
 				try {
 					armadaService.send(log);
+					logger.info("Log sent!");
 				}
 				catch(RemoteConnectFailureException e) {
 					logger.error("Armada could not be reached!");
