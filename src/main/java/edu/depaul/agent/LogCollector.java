@@ -119,8 +119,8 @@ public class LogCollector {
 		iterateParserUntilKeyMatch("timestamp");
 		nextJson(); //select timestamp value
 		String timestamp = jsonParser.getString();
-		Date date = DateUtils.parseDate(timestamp, new String[]{"yyyy-MM-dd hh:mm:ss.SSSZ"});
-		containerLog.timestamp = new Timestamp(date.getTime());
+		Date date = DateUtils.parseDate(timestamp, new String[]{"yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"});
+		containerLog.timestamp = new Timestamp(date.getTime() - 10 * 60 * 60 * 1000);
 	}
 
 	private static void setContainerCpuTotalUsage(AgentContainerLog containerLog) throws Exception {
