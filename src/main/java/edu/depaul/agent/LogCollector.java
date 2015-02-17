@@ -95,7 +95,7 @@ public class LogCollector {
 			nextJson(); //select timestamp value
 			String timestamp = jsonParser.getString();
 			Date date = DateUtils.parseDate(timestamp, new String[]{"yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"});
-			containerLog.timestamp = new Timestamp(date.getTime());
+			containerLog.timestamp = new Timestamp(date.getTime() - 10 * 60 * 60 * 1000);
 
 			iterateParserUntilKeyMatch("cpu");
 			iterateParserUntilKeyMatch("total");
