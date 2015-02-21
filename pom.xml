@@ -63,7 +63,7 @@
 						</goals>
 						<configuration>
 							<!-- Optional Start -->
-							<finalName>Agent</finalName>
+							<finalName>agent</finalName>
 							<shadedArtifactAttached>true</shadedArtifactAttached>
 							<shadedClassifierName>jar-with-dependencies</shadedClassifierName>
 							<!-- Optional End -->
