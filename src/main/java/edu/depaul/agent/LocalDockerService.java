@@ -45,6 +45,10 @@ public class LocalDockerService {
 		LOG.info("Search returned " + dockerSearch.toString());
 	}
 
+	/**
+	 * 
+	 * @param imageName docker image to be removed
+	 */
 	public void removeImage(String imageName) {
 		LOG.info("Removing image: {}", imageName);
 		try {
@@ -56,6 +60,10 @@ public class LocalDockerService {
 		}
 	}
 
+	/**
+	 * 
+	 * @param imageName docker image to be pulled
+	 */
 	public void pullImage(String imageName) {
 		Info info = getLocalDockerInfo();
 
@@ -82,6 +90,13 @@ public class LocalDockerService {
 		LOG.info("Image Inspect: {}", inspectImageResponse.toString());
 	}
 
+	/**
+	 * 
+	 * @param imageName docker image container will be created from
+	 * @param containerName container to be created
+	 * @param command String array of usable commands
+	 * @return container String id
+	 */
 	public String createContainer(String imageName, String containerName, String[] command) {
 		CreateContainerResponse container = dockerClient
 				.createContainerCmd(imageName).withCmd(command)
@@ -91,25 +106,46 @@ public class LocalDockerService {
 		return container.getId();
 	}
 
+	/**
+	 * 
+	 * @param containerId String id of container to be started
+	 */
 	public void startContainer(String containerId) {
 		dockerClient.startContainerCmd(containerId).exec();
 		InspectContainerResponse containerResponse = inspectContainer(containerId);
 		LOG.info("Container Inspect: {}", containerResponse.toString());
 	}
 
-
+	/**
+	 * 
+	 * @param containerId String id of container to be stopped
+	 */
 	public void stopContainer(String containerId) {
 		dockerClient.stopContainerCmd(containerId).exec();
 	}
 
+	/**
+	 * 
+	 * @param containerId 
+	 * @return
+	 */
 	public InspectContainerResponse inspectContainer(String containerId) {
 		return dockerClient.inspectContainerCmd(containerId).exec();
 	}
 
+	/**
+	 * 
+	 * @param containerId
+	 */
 	public void removeContainer(String containerId) {
 		dockerClient.removeContainerCmd(containerId).exec();
 	}
 
+	/**
+	 * 
+	 * @param response
+	 * @return
+	 */
 	protected String responseAsString(InputStream response) {
 		StringWriter logwriter = new StringWriter();
 		try {

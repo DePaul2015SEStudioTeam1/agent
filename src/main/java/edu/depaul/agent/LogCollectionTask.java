@@ -16,10 +16,18 @@ public class LogCollectionTask implements Runnable {
 	private LogCollector logCollector;
 	private ArmadaService armadaService; 
 	
+	/**
+	 * 
+	 * @param logCollector object for log data collections
+	 */
 	public void setLogCollector(LogCollector logCollector){
 		this.logCollector = logCollector;
 	}
 	
+	/**
+	 * 
+	 * @param armadaService
+	 */
 	public void setArmadaService(ArmadaService armadaService) {
 		this.armadaService = armadaService;
 	}

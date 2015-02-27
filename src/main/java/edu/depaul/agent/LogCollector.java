@@ -32,6 +32,11 @@ public class LogCollector {
 	private ThreadLocal<JsonParser> jsonParser = new ThreadLocal<JsonParser>();
 	private String cAdvisorURL;
 
+	/**
+	 * 
+	 * @param cAdvisorURL url giving the base location of the 
+	 * json data for active containers
+	 */
 	public void setcAdvisorURL(String cAdvisorURL) {
 		this.cAdvisorURL = cAdvisorURL;
 	}
