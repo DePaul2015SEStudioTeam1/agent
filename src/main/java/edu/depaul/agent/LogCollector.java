@@ -7,8 +7,9 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
-
+import java.util.Map;
 import javax.json.Json;
 import javax.json.stream.JsonParser;
 
@@ -18,18 +19,12 @@ import org.slf4j.LoggerFactory;
 
 import edu.depaul.armada.model.AgentContainerLog;
 
-/**
- * 
- * @author Deonte Johnson
- * 
- * modified 2/15/15 - Deonte
- *
- */
 public class LogCollector {
 
 	private static final Logger logger = LoggerFactory.getLogger(LogCollector.class);
 	
 	private ThreadLocal<JsonParser> jsonParser = new ThreadLocal<JsonParser>();
+	private Map<String, CpuTime> previousCpuTotals = new HashMap<>();
 	private String cAdvisorURL;
 
 	/**
@@ -121,14 +116,29 @@ public class LogCollector {
 		iterateParserUntilKeyMatch("memory"); //"name" is the JSON field that actually holds the ID
 		iterateParserUntilKeyMatch("limit"); //"name" is the JSON field that actually holds the ID
 		nextJson();
-		containerLog.memTotal = jsonParser.get().getLong();
+		String memoryLimit = jsonParser.get().getString();
+
+		//if the number is big enough to be the max value,
+		// then cAdvisor has defaulted it to  have an "unlimited" limit of memory.
+		// Set it as -1 to more clearly indicate that there is no hard limit.
+		if (memoryLimit.length() >= 19) {
+			memoryLimit = "-1";
+		}
+		containerLog.memTotal = Long.valueOf(memoryLimit);
+
 	}
 
 	private void setContainerTimestamp(AgentContainerLog containerLog) throws Exception {
 		iterateParserUntilKeyMatch("timestamp");
 		nextJson(); //select timestamp value
+
+		/**
+		 * TODO: actual Timestamp calculation is off
+		 */
 		String timestamp = jsonParser.get().getString();
-		Date date = DateUtils.parseDate(timestamp, new String[]{"yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"});
+		Date date = DateUtils.parseDate(timestamp, new String[]{"yyyy-MM-dd'T'HH:mm:ss.SSSSSSSSS'Z'"});
+		Timestamp testTimestamp = new Timestamp(date.getTime());
+		Timestamp timestampToInsert = new Timestamp(date.getTime() - 10 * 60 * 60 * 1000);
 		containerLog.timestamp = new Timestamp(date.getTime() - 10 * 60 * 60 * 1000);
 	}
 
@@ -136,14 +146,46 @@ public class LogCollector {
 		iterateParserUntilKeyMatch("cpu");
 		iterateParserUntilKeyMatch("total");
 		nextJson(); //select total cpu usage
-		containerLog.cpuUsed = jsonParser.get().getLong();
+
+		boolean previousCpuTotalExists = previousCpuTotals.containsKey(containerLog.name);
+		Long currentCpuNanosTotal = jsonParser.get().getLong();
+		Long lastCalculatedCpuNanosTotal;
+		Timestamp lastCpuTimestamp;
+		if (previousCpuTotalExists) {
+			CpuTime previousTime = previousCpuTotals.get(containerLog.name);
+			lastCalculatedCpuNanosTotal = previousTime.nanoseconds;
+			lastCpuTimestamp = previousTime.timestamp;
+
+			long usedNanosInInterval = currentCpuNanosTotal - lastCalculatedCpuNanosTotal;
+			long thisTimestamp = containerLog.timestamp.getTime();
+			long lastTimestamp = lastCpuTimestamp.getTime();
+			long totalMillisInInterval = lastTimestamp - thisTimestamp;
+
+			//multiply by 1000000 to go from millis to nanos
+			Double cpuPercentUsage = (double) usedNanosInInterval / ((double)totalMillisInInterval * 1000000.0);
+
+			//percentage of CPU used, times 100 to represent 2 decimal places.
+			// Example: if 13.25% of cpu is used, then:
+			//      cpuPercentUsage = 13.25
+			//      containerLog.cpuUsed = 1325
+			containerLog.cpuUsed = (long)(cpuPercentUsage * 100);
+
+
+		} else {
+			//Because this means it's the first log collection of this container,
+			// there is no interval to measure CPU used over.
+			containerLog.cpuUsed = 0;
+			logger.warn("TIMESTAMP: " + containerLog.timestamp);
+			previousCpuTotals.put(containerLog.name, new CpuTime(containerLog.timestamp, currentCpuNanosTotal));
+		}
 	}
 
 	private void setContainerMemoryUsage(AgentContainerLog containerLog) throws Exception {
 		iterateParserUntilKeyMatch("memory");
 		iterateParserUntilKeyMatch("usage");
 		nextJson();
-		containerLog.memUsed = jsonParser.get().getLong();
+
+		containerLog.memUsed = jsonParser.get().getLong() / 1024; //KB of memory used
 	}
 
 	private void setContainerFilesystemCapacity(AgentContainerLog containerLog) throws Exception {
@@ -175,4 +217,13 @@ public class LogCollector {
 		return (jsonParser.get().hasNext()) ? jsonParser.get().next() : null;
 	}
 
+	public class CpuTime {
+		public final Timestamp timestamp;
+		public final Long nanoseconds;
+
+		public CpuTime(Timestamp timestamp, Long nanoseconds) {
+			this.timestamp = timestamp;
+			this.nanoseconds = nanoseconds;
+		}
+	}
 }

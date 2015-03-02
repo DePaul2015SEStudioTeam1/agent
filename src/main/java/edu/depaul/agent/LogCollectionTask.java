@@ -38,9 +38,8 @@ public class LogCollectionTask implements Runnable {
 			// AgentContainerLog is a DTO used by the agent to send data over to 
 			// the Armada. It's is used to send in all the info that is 
 			// needed to save logs
-			List<AgentContainerLog> data = logCollector.getCurrentLogs();
-			for(int i = 0; i < data.size(); i++) {
-				AgentContainerLog log = data.get(i);
+			List<AgentContainerLog> containerLogList = logCollector.getCurrentLogs();
+			for(AgentContainerLog log : containerLogList) {
 				try {
 					armadaService.send(log);
 					logger.info("Log sent!");
