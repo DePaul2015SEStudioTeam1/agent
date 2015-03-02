@@ -42,13 +42,11 @@ public class LogCollectionTask implements Runnable {
 			for(AgentContainerLog log : containerLogList) {
 				try {
 					armadaService.send(log);
-					logger.info("Log sent!");
 				}
 				catch(RemoteConnectFailureException e) {
 					logger.error("Armada could not be reached!");
 				}
 			}
-
 		}
 		catch(Exception e) {
 			logger.error(e.getMessage(), e);

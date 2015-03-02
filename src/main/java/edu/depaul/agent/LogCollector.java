@@ -128,16 +128,6 @@ public class LogCollector {
 	}
 
 	private synchronized void setContainerTimestamp(AgentContainerLog containerLog) throws Exception {
-		//iterateParserUntilKeyMatch("timestamp");
-		//nextJson(); //select timestamp value
-
-		/**
-		 * TODO: actual Timestamp calculation is off
-		 */
-		//String timestamp = jsonParser.get().getString();
-		//Date date = DateUtils.parseDate(timestamp, new String[]{"yyyy-MM-dd'T'HH:mm:ss.SSSSSSSSS'Z'"});
-		//Timestamp testTimestamp = new Timestamp(date.getTime());
-		//Timestamp timestampToInsert = new Timestamp(date.getTime() - 10 * 60 * 60 * 1000);
 		containerLog.timestamp = new Timestamp(System.currentTimeMillis());
 	}
 
@@ -158,7 +148,7 @@ public class LogCollector {
 			long usedNanosInInterval = currentCpuNanosTotal - lastCalculatedCpuNanosTotal;
 			long thisTimestamp = containerLog.timestamp.getTime();
 			long lastTimestamp = lastCpuTimestamp.getTime();
-			long totalMillisInInterval = lastTimestamp - thisTimestamp;
+			long totalMillisInInterval = thisTimestamp - lastTimestamp;
 
 			//multiply by 1000000 to go from millis to nanos
 			Double cpuPercentUsage = (double) usedNanosInInterval / ((double)totalMillisInInterval * 1000000.0);
