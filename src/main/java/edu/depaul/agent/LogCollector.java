@@ -6,14 +6,13 @@ import java.net.URL;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import javax.json.Json;
 import javax.json.stream.JsonParser;
 
-import org.apache.commons.lang.time.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -128,18 +127,18 @@ public class LogCollector {
 
 	}
 
-	private void setContainerTimestamp(AgentContainerLog containerLog) throws Exception {
-		iterateParserUntilKeyMatch("timestamp");
-		nextJson(); //select timestamp value
+	private synchronized void setContainerTimestamp(AgentContainerLog containerLog) throws Exception {
+		//iterateParserUntilKeyMatch("timestamp");
+		//nextJson(); //select timestamp value
 
 		/**
 		 * TODO: actual Timestamp calculation is off
 		 */
-		String timestamp = jsonParser.get().getString();
-		Date date = DateUtils.parseDate(timestamp, new String[]{"yyyy-MM-dd'T'HH:mm:ss.SSSSSSSSS'Z'"});
-		Timestamp testTimestamp = new Timestamp(date.getTime());
-		Timestamp timestampToInsert = new Timestamp(date.getTime() - 10 * 60 * 60 * 1000);
-		containerLog.timestamp = new Timestamp(date.getTime() - 10 * 60 * 60 * 1000);
+		//String timestamp = jsonParser.get().getString();
+		//Date date = DateUtils.parseDate(timestamp, new String[]{"yyyy-MM-dd'T'HH:mm:ss.SSSSSSSSS'Z'"});
+		//Timestamp testTimestamp = new Timestamp(date.getTime());
+		//Timestamp timestampToInsert = new Timestamp(date.getTime() - 10 * 60 * 60 * 1000);
+		containerLog.timestamp = new Timestamp(System.currentTimeMillis());
 	}
 
 	private void setContainerCpuTotalUsage(AgentContainerLog containerLog) throws Exception {
