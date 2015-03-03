@@ -66,6 +66,7 @@ public class LogCollector {
 		 */
 		while (jsonParser.get().hasNext()) {
 			AgentContainerLog containerLog = new AgentContainerLog();
+			containerLog.cAdvisorURL = cAdvisorURL;
 			populateLog(containerLog);
 			logList.add(containerLog);
 		}
