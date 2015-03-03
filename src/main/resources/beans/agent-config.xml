@@ -23,7 +23,7 @@
 
     <task:scheduler id="scheduler" pool-size="1"/>
     <task:scheduled-tasks>
-        <task:scheduled ref="logCollectionTask" method="run" fixed-delay="1000" fixed-rate="000"/>
+        <task:scheduled ref="logCollectionTask" method="run" fixed-delay="30000" fixed-rate="30000"/>
     </task:scheduled-tasks>
 
 </beans>
