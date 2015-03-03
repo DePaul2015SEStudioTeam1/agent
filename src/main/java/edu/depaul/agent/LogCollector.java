@@ -105,26 +105,26 @@ public class LogCollector {
 	}
 
 	private void setContainerCpuLimit(AgentContainerLog containerLog) throws Exception {
-		iterateParserUntilKeyMatch("cpu"); //"name" is the JSON field that actually holds the ID
-		iterateParserUntilKeyMatch("limit"); //"name" is the JSON field that actually holds the ID
+		iterateParserUntilKeyMatch("cpu");
+		iterateParserUntilKeyMatch("limit");
 		nextJson();
 		containerLog.cpuTotal = jsonParser.get().getLong();
 	}
 
 	private void setContainerMemoryLimit(AgentContainerLog containerLog) throws Exception {
-		iterateParserUntilKeyMatch("memory"); //"name" is the JSON field that actually holds the ID
-		iterateParserUntilKeyMatch("limit"); //"name" is the JSON field that actually holds the ID
+		iterateParserUntilKeyMatch("memory");
+		iterateParserUntilKeyMatch("limit");
 		nextJson();
 		String memoryLimit = jsonParser.get().getString();
 
-		//if the number is big enough to be the max value,
+		//if the number is big enough to be the max value (19 digits or more),
 		// then cAdvisor has defaulted it to  have an "unlimited" limit of memory.
 		// Set it as -1 to more clearly indicate that there is no hard limit.
-		if (memoryLimit.length() >= 19) {
-			memoryLimit = "-1";
+		long memoryLimitValue = -1;
+		if (memoryLimit.length() < 19) {
+			memoryLimitValue = Long.valueOf(memoryLimit) / 1024; //divide by 1024 to get in KB
 		}
-		containerLog.memTotal = Long.valueOf(memoryLimit);
-
+		containerLog.memTotal = memoryLimitValue;
 	}
 
 	private synchronized void setContainerTimestamp(AgentContainerLog containerLog) throws Exception {
@@ -159,7 +159,6 @@ public class LogCollector {
 			//      containerLog.cpuUsed = 1325
 			containerLog.cpuUsed = (long)(cpuPercentUsage * 100);
 
-
 		} else {
 			//Because this means it's the first log collection of this container,
 			// there is no interval to measure CPU used over.
@@ -181,13 +180,13 @@ public class LogCollector {
 		iterateParserUntilKeyMatch("filesystem");
 		iterateParserUntilKeyMatch("capacity");
 		nextJson();
-		containerLog.diskTotal = jsonParser.get().getLong();
+		containerLog.diskTotal = jsonParser.get().getLong() / 1048576; //divide by 1048576 for Bytes -> MB
 	}
 
 	private void setContainerFilesystemUsage(AgentContainerLog containerLog) throws Exception {
 		iterateParserUntilKeyMatch("usage");
 		nextJson();
-		containerLog.diskUsed = jsonParser.get().getLong();
+		containerLog.diskUsed = jsonParser.get().getLong() / 1048576; //divide by 1048576 for Bytes -> MB
 	}
 
 	private void iterateParserUntilKeyMatch(String regexKey) {
