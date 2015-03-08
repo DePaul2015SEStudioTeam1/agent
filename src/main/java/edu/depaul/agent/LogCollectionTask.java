@@ -9,6 +9,10 @@ import org.springframework.remoting.RemoteConnectFailureException;
 import edu.depaul.armada.model.AgentContainerLog;
 import edu.depaul.armada.service.ArmadaService;
 
+/**
+ * This class obtains container logs to be parsed by the agent.
+ *
+ */
 public class LogCollectionTask implements Runnable {
 	
 	private static final Logger logger = LoggerFactory.getLogger(LogCollectionTask.class);
@@ -17,7 +21,7 @@ public class LogCollectionTask implements Runnable {
 	private ArmadaService armadaService; 
 	
 	/**
-	 * 
+	 * Creates a reference to the LogCollector object that it is passed.
 	 * @param logCollector object for log data collections
 	 */
 	public void setLogCollector(LogCollector logCollector){
@@ -25,13 +29,16 @@ public class LogCollectionTask implements Runnable {
 	}
 	
 	/**
-	 * 
+	 * Creates a reference to the ArmadaService object that it is passed.
 	 * @param armadaService
 	 */
 	public void setArmadaService(ArmadaService armadaService) {
 		this.armadaService = armadaService;
 	}
 
+	/**
+	 * Runnable method that parses a List<AgentContainerLog> and sends it to Armad.
+	 */
 	@Override
 	public void run() {
 		try {

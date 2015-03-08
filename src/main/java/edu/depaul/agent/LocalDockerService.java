@@ -20,6 +20,10 @@ import java.io.InputStream;
 import java.io.StringWriter;
 import java.util.List;
 
+/**
+ * This class interacts with Docker to create and manage containers.
+ *
+ */
 @Component
 public class LocalDockerService {
 
@@ -27,6 +31,9 @@ public class LocalDockerService {
 			.getLogger(LocalDockerService.class);
 	private DockerClient dockerClient;
 
+	/**
+	 * Creates and connects to a local Docker client.
+	 */
 	public void connectToLocalDocker() {
 		DockerClientConfig.DockerClientConfigBuilder b = DockerClientConfig.createDefaultConfigBuilder();
 		LOG.info(b.toString());
@@ -34,19 +41,29 @@ public class LocalDockerService {
 		LOG.info("connected to: " + dockerClient.toString());
 	}
 
+	/**
+	 * Gets information from a Docker client.
+	 * @return Info
+	 */
 	public Info getLocalDockerInfo() {
 		Info info = dockerClient.infoCmd().exec();
 		LOG.info("Client info: {}", info.toString());
 		return info;
 	}
 
+	/**
+	 * Searches the Docker repository for an image matching the one passed
+	 * as a parameter.
+	 * @param imageName
+	 */
 	public void searchDockerRepository(String imageName) {
 		List<SearchItem> dockerSearch = dockerClient.searchImagesCmd(imageName).exec();
 		LOG.info("Search returned " + dockerSearch.toString());
 	}
 
 	/**
-	 * 
+	 * Removes the Docker image whose name matches the one passed as a 
+	 * parameter from the Docker repository.
 	 * @param imageName docker image to be removed
 	 */
 	public void removeImage(String imageName) {
@@ -61,7 +78,8 @@ public class LocalDockerService {
 	}
 
 	/**
-	 * 
+	 * Pulls the Docker image, whose name matches the String
+	 * passed as a parameter, from the repository.
 	 * @param imageName docker image to be pulled
 	 */
 	public void pullImage(String imageName) {
@@ -91,7 +109,7 @@ public class LocalDockerService {
 	}
 
 	/**
-	 * 
+	 * Creates a Docker container object.
 	 * @param imageName docker image container will be created from
 	 * @param containerName container to be created
 	 * @param command String array of usable commands
@@ -107,7 +125,7 @@ public class LocalDockerService {
 	}
 
 	/**
-	 * 
+	 * Starts a container running.
 	 * @param containerId String id of container to be started
 	 */
 	public void startContainer(String containerId) {
@@ -117,7 +135,7 @@ public class LocalDockerService {
 	}
 
 	/**
-	 * 
+	 * Stops a running container.
 	 * @param containerId String id of container to be stopped
 	 */
 	public void stopContainer(String containerId) {
@@ -125,16 +143,17 @@ public class LocalDockerService {
 	}
 
 	/**
-	 * 
+	 * Calls the command inspectContainerCmd on the container with the id that
+	 * matches the String passed as a parameter
 	 * @param containerId 
-	 * @return
+	 * @return InspectContainerResponse
 	 */
 	public InspectContainerResponse inspectContainer(String containerId) {
 		return dockerClient.inspectContainerCmd(containerId).exec();
 	}
 
 	/**
-	 * 
+	 * Removes a container from the Docker client.
 	 * @param containerId
 	 */
 	public void removeContainer(String containerId) {
@@ -142,9 +161,10 @@ public class LocalDockerService {
 	}
 
 	/**
-	 * 
+	 * Accepts an InputStream as a parameter, converts it into a String
+	 * and returns that String.
 	 * @param response
-	 * @return
+	 * @return String
 	 */
 	protected String responseAsString(InputStream response) {
 		StringWriter logwriter = new StringWriter();
@@ -166,6 +186,9 @@ public class LocalDockerService {
 		}
 	}
 
+	/**
+	 * Closes the Docker client.
+	 */
 	public void cleanUp() {
 		try {
 			dockerClient.close();

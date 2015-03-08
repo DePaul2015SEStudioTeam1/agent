@@ -18,6 +18,11 @@ import org.slf4j.LoggerFactory;
 
 import edu.depaul.armada.model.AgentContainerLog;
 
+/**
+ * This class collects logs coming from agents, parses them, and puts the data
+ * into AgentContainerLog objects for storage. 
+ *
+ */
 public class LogCollector {
 
 	private static final Logger logger = LoggerFactory.getLogger(LogCollector.class);
@@ -55,6 +60,10 @@ public class LogCollector {
 		return Collections.emptyList();
 	}
 
+	/**
+	 * This mehtod accepts a a List<AgentContainerLog> and parses it.
+	 * @param logList List<AgentContainerLog>
+	 */
 	private void parseJson(final List<AgentContainerLog> logList) {
 		/**
 		 * Logic:
@@ -72,6 +81,12 @@ public class LogCollector {
 		}
 	}
 
+	/**
+	 * This method takes AgentContainerLog data and uses it to set the
+	 * values of Container data
+	 * @param AgentContainerLog
+	 * 
+	 */
 	private void populateLog(final AgentContainerLog containerLog) {
 
 		try {
@@ -92,12 +107,22 @@ public class LogCollector {
 		}
 	}
 
+	/**
+	 * Sets the containerUniqueId field of the AgentContainerLog passed as a parameter.
+	 * @param containerLog AgentContainerLog
+	 * @throws Exception
+	 */
 	private void setContainerUniqueId(AgentContainerLog containerLog) throws Exception {
 		iterateParserUntilKeyMatch("name"); //"name" is the JSON field that actually holds the ID
 		nextJson();
 		containerLog.containerUniqueId = jsonParser.get().getString();
 	}
 
+	/**
+	 * Sets the name field of the AgentContainerLog object passed as a parameter.
+	 * @param containerLog AgentContainerLog
+	 * @throws Exception
+	 */
 	private void setContainerName(AgentContainerLog containerLog) throws Exception {
 		iterateParserUntilKeyMatch("aliases"); //"aliases" holds the human readable name
 		nextJson();
@@ -105,6 +130,11 @@ public class LogCollector {
 		containerLog.name = jsonParser.get().getString();
 	}
 
+	/**
+	 * Sets the cpuTotal field of the AgentContainerLog object passed as a parameter.
+	 * @param containerLog AgentContainerLog
+	 * @throws Exception
+	 */
 	private void setContainerCpuLimit(AgentContainerLog containerLog) throws Exception {
 		iterateParserUntilKeyMatch("cpu");
 		iterateParserUntilKeyMatch("limit");
@@ -112,6 +142,11 @@ public class LogCollector {
 		containerLog.cpuTotal = jsonParser.get().getLong();
 	}
 
+	/**
+	 * Sets the memoryLimit field of the AgentContainerLog object passed as a parameter.
+	 * @param containerLog AgentContainerLog
+	 * @throws Exception
+	 */
 	private void setContainerMemoryLimit(AgentContainerLog containerLog) throws Exception {
 		iterateParserUntilKeyMatch("memory");
 		iterateParserUntilKeyMatch("limit");
@@ -128,10 +163,20 @@ public class LogCollector {
 		containerLog.memTotal = memoryLimitValue;
 	}
 
+	/**
+	 * Sets the timestamp field of the AgentContainerLog object passed as a parameter.
+	 * @param containerLog AgentContainerLog
+	 * @throws Exception
+	 */
 	private synchronized void setContainerTimestamp(AgentContainerLog containerLog) throws Exception {
 		containerLog.timestamp = new Timestamp(System.currentTimeMillis());
 	}
 
+	/**
+	 * Sets the previousCpuTotals field of the AgentContainerLog object passed as a parameter.
+	 * @param containerLog AgentContainerLog
+	 * @throws Exception
+	 */
 	private void setContainerCpuTotalUsage(AgentContainerLog containerLog) throws Exception {
 		iterateParserUntilKeyMatch("cpu");
 		iterateParserUntilKeyMatch("total");
@@ -169,6 +214,11 @@ public class LogCollector {
 		}
 	}
 
+	/**
+	 * Sets the memUsed field of the AgentContainerLog object passed as a parameter.
+	 * @param containerLog AgentContainerLog
+	 * @throws Exception
+	 */
 	private void setContainerMemoryUsage(AgentContainerLog containerLog) throws Exception {
 		iterateParserUntilKeyMatch("memory");
 		iterateParserUntilKeyMatch("usage");
@@ -177,6 +227,11 @@ public class LogCollector {
 		containerLog.memUsed = jsonParser.get().getLong() / 1024; //KB of memory used
 	}
 
+	/**
+	 * Sets the diskTotal field of the AgentContainerLog object passed as a parameter.
+	 * @param containerLog AgentContainerLog
+	 * @throws Exception
+	 */
 	private void setContainerFilesystemCapacity(AgentContainerLog containerLog) throws Exception {
 		iterateParserUntilKeyMatch("filesystem");
 		iterateParserUntilKeyMatch("capacity");
@@ -184,12 +239,22 @@ public class LogCollector {
 		containerLog.diskTotal = jsonParser.get().getLong() / 1048576; //divide by 1048576 for Bytes -> MB
 	}
 
+	/**
+	 * Sets the diskUsed field of the AgentContainerLog object passed as a parameter.
+	 * @param containerLog AgentContainerLog
+	 * @throws Exception
+	 */
 	private void setContainerFilesystemUsage(AgentContainerLog containerLog) throws Exception {
 		iterateParserUntilKeyMatch("usage");
 		nextJson();
 		containerLog.diskUsed = jsonParser.get().getLong() / 1048576; //divide by 1048576 for Bytes -> MB
 	}
 
+	/**
+	 * Parses JSON for data that matches the String passed as a parameter, and returns when
+	 * a match is found.
+	 * @param regexKey
+	 */
 	private void iterateParserUntilKeyMatch(String regexKey) {
 		JsonParser.Event nextJsonEvent = nextJson();
 
@@ -202,10 +267,18 @@ public class LogCollector {
 	}
 
 	//iterates to the next json event and returns it
+	/**
+	 * Iterates to the next JSON event and returns it.
+	 * @return JsonParser
+	 */
 	private JsonParser.Event nextJson() {
 		return (jsonParser.get().hasNext()) ? jsonParser.get().next() : null;
 	}
 
+	/**
+	 * A utilty class to create the desired formatting for timestamps.
+	 *
+	 */
 	public class CpuTime {
 		public final Timestamp timestamp;
 		public final Long nanoseconds;
