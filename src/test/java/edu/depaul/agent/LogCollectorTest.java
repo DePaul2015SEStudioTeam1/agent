@@ -10,56 +10,55 @@ import edu.depaul.armada.model.AgentContainerLog;
 
 public class LogCollectorTest {
 
-//	@Test
-//	public void setcAdvisorURLTest() throws Exception {
-//
-//		LogCollector logCollector = new LogCollector();
-//		logCollector.setcAdvisorURL("http://140.192.249.16:8890/api/v1.2/docker");
-//
-//		//access private field
-//		Field field = logCollector.getClass().getDeclaredField("cAdvisorURL");
-//		field.setAccessible(true);
-//
-//		Assert.assertSame(field.get(logCollector), "http://140.192.249.16:8890/api/v1.2/docker");
-//	}
-//
-//	@Test
-//	public void ListNotEmptyTest() {
-//		LogCollector logCollector = new LogCollector();
-//		logCollector.setcAdvisorURL("http://140.192.249.16:8890/api/v1.2/docker");
-//		java.util.List<AgentContainerLog> list = logCollector.getCurrentLogs();
-//
-//		Assert.assertFalse(list.isEmpty());
-//	}
-//
-//	@Test
-//	public void emptyCollectionTest() {
-//		LogCollector logCollector = new LogCollector();
-//		logCollector.setcAdvisorURL("List should be empty");
-//		java.util.List<AgentContainerLog> list = logCollector.getCurrentLogs();
-//
-//		Assert.assertTrue(list.isEmpty());
-//	}
-//
-//	@Test
-//	public void checkFieldInitializationTest() {
-//		LogCollector logCollector = new LogCollector();
-//		logCollector.setcAdvisorURL("http://140.192.249.16:8890/api/v1.2/docker");
-//		java.util.List<AgentContainerLog> list = logCollector.getCurrentLogs();
-//
-//		for (AgentContainerLog containerLog : list) {
-//			Assert.assertNotNull(containerLog.containerUniqueId);
-//			Assert.assertNotNull(containerLog.name);
-//			Assert.assertTrue(containerLog.cpuTotal > 0);
-//			//Assert.assertTrue(l.memTotal > 0);
-//			Assert.assertNotNull(containerLog.timestamp);
-//			Assert.assertTrue(containerLog.cpuUsed > 0);
-//			Assert.assertTrue(containerLog.memUsed > 0);
-//			Assert.assertTrue(containerLog.diskTotal > 0);
-//			Assert.assertTrue(containerLog.diskUsed > 0);
-//
-//		}
-//	}
+	@Test
+	public void setcAdvisorURLTest() throws Exception {
+
+		LogCollector logCollector = new LogCollector();
+		logCollector.setcAdvisorURL("http://140.192.249.16:8890/api/v1.2/docker");
+
+		//access private field
+		Field field = logCollector.getClass().getDeclaredField("cAdvisorURL");
+		field.setAccessible(true);
+
+		Assert.assertSame(field.get(logCollector), "http://140.192.249.16:8890/api/v1.2/docker");
+	}
+
+	@Test
+	public void ListNotEmptyTest() {
+		LogCollector logCollector = new LogCollector();
+		logCollector.setcAdvisorURL("http://140.192.249.16:8890/api/v1.2/docker");
+		java.util.List<AgentContainerLog> list = logCollector.getCurrentLogs();
+
+		Assert.assertFalse(list.isEmpty());
+	}
+
+	@Test
+	public void emptyCollectionTest() {
+		LogCollector logCollector = new LogCollector();
+		logCollector.setcAdvisorURL("List should be empty");
+		java.util.List<AgentContainerLog> list = logCollector.getCurrentLogs();
+
+		Assert.assertTrue(list.isEmpty());
+	}
+
+	@Test
+	public void checkFieldInitializationTest() {
+		LogCollector logCollector = new LogCollector();
+		logCollector.setcAdvisorURL("http://140.192.249.16:8890/api/v1.2/docker");
+		java.util.List<AgentContainerLog> list = logCollector.getCurrentLogs();
+
+		for (AgentContainerLog containerLog : list) {
+			Assert.assertNotNull(containerLog.containerUniqueId);
+			Assert.assertNotNull(containerLog.name);
+			Assert.assertTrue(containerLog.cpuTotal > 0);
+			Assert.assertTrue(containerLog.memTotal >= -1);
+			Assert.assertNotNull(containerLog.timestamp);
+			Assert.assertTrue(containerLog.cpuUsed >= 0);
+			Assert.assertTrue(containerLog.memUsed > 0);
+			Assert.assertTrue(containerLog.diskTotal > 0);
+			Assert.assertTrue(containerLog.diskUsed >= 0);
+		}
+	}
 
 	@Test
 	public void checkContainerUniqueId() {
