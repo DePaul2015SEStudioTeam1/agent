@@ -50,14 +50,13 @@ public class LogCollectorTest {
 		for (AgentContainerLog containerLog : list) {
 			Assert.assertNotNull(containerLog.containerUniqueId);
 			Assert.assertNotNull(containerLog.name);
-			Assert.assertNotNull(containerLog.cpuTotal);
-			Assert.assertNotNull(containerLog.memTotal);
+			Assert.assertTrue(containerLog.cpuTotal > 0);
+			Assert.assertTrue(containerLog.memTotal >= -1);
 			Assert.assertNotNull(containerLog.timestamp);
-			Assert.assertNotNull(containerLog.cpuUsed);
-			Assert.assertNotNull(containerLog.memUsed);
-			Assert.assertNotNull(containerLog.diskTotal);
-			Assert.assertNotNull(containerLog.diskUsed);
-
+			Assert.assertTrue(containerLog.cpuUsed >= 0);
+			Assert.assertTrue(containerLog.memUsed > 0);
+			Assert.assertTrue(containerLog.diskTotal > 0);
+			Assert.assertTrue(containerLog.diskUsed >= 0);
 		}
 	}
 
