@@ -61,7 +61,7 @@ public class LogCollector {
 	}
 
 	/**
-	 * This mehtod accepts a a List<AgentContainerLog> and parses it.
+	 * This method accepts a a List<AgentContainerLog> and parses it.
 	 * @param logList List<AgentContainerLog>
 	 */
 	private void parseJson(final List<AgentContainerLog> logList) {
